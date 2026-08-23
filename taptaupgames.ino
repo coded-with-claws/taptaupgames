@@ -7,7 +7,8 @@
 
 void setup() {
   // Serial init
-  Serial.begin(9600);
+  // DISABLED SERIAL: interfers with pins RX/DX which are used for buttons
+  //Serial.begin(9600);
   Serial.print(F("*** TAUPITAUPE ")); Serial.print(VERSION); Serial.println(F(" STARTING ***"));
   init_hardware();
   Serial.println(F("*** TAUPITAUPE INITIALIZED ***"));
@@ -20,11 +21,14 @@ void loop() {
 void init_hardware() {
   
   uint8_t i;
+
+  // Disabled on-board LED
+  pinMode(LED_BUILTIN, OUTPUT); digitalWrite(LED_BUILTIN, 0);
   
   // LEDs init
   for (i = 0; i < LED_PINS_NB ; i++) {
-    pinMode(out_led_pins[i], OUTPUT);
-    digitalWrite(out_led_pins[i], LOW);
+    pinMode(led_pins[i], OUTPUT);
+    digitalWrite(led_pins[i], LOW);
   }
   
   // Buttons init
