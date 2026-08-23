@@ -4,15 +4,15 @@
  * LED (on button) management
  */
 
-// Receive LED number 1..12, return index for led_mapping array
+// Receive LED number 0..11, return index for led_mapping array
 uint8_t calc_led_mapping(uint8_t led_nb) {
-  if (led_nb < 1 || led_nb > 12) {
+  if (led_nb < 0 || led_nb >= LED_NB) {
     return 255;
   }
-  return (led_nb - 1) * 2;
+  return led_nb * 2;
 }
 
-// Light ON LED number 1..12
+// Light ON LED number 0..11
 void lighton_led(uint8_t led_nb) {
   uint8_t index = calc_led_mapping(led_nb);
   if (index == 255) {
@@ -22,7 +22,7 @@ void lighton_led(uint8_t led_nb) {
   digitalWrite(led_mapping[index + 1], HIGH);
 }
 
-// Light OFF LED number 1..12
+// Light OFF LED number 0..11
 void lightoff_led(uint8_t led_nb) {
   uint8_t index = calc_led_mapping(led_nb);
   if (index == 255) {
@@ -49,13 +49,70 @@ void test_buttons_leds() {
   delay(1000);
   
   // Light all LEDs one by one
-  for (i = 1; i <= LED_NB ; i++) {
+  for (i = 0; i < LED_NB ; i++) {
     lighton_led(i);
-    delay(500);
+    delay(200);
     lightoff_led(i);
-    delay(500);
+    delay(200);
   }
-  
+  delay(1000);
+
+  // Versus mode
+  // Light all LEDs of player 1
+  lighton_led(P1_1); delay(200);
+  lightoff_led(P1_1); delay(200);
+  lighton_led(P1_2); delay(200);
+  lightoff_led(P1_2); delay(200);
+  lighton_led(P1_3); delay(200);
+  lightoff_led(P1_3); delay(200);
+  lighton_led(P1_4); delay(200);
+  lightoff_led(P1_4); delay(200);
+  lighton_led(P1_5); delay(200);
+  lightoff_led(P1_5); delay(200);
+  lighton_led(P1_6); delay(200);
+  lightoff_led(P1_6); delay(200);
+
+  // Light all LEDs of player 2
+  lighton_led(P2_1); delay(200);
+  lightoff_led(P2_1); delay(200);
+  lighton_led(P2_2); delay(200);
+  lightoff_led(P2_2); delay(200);
+  lighton_led(P2_3); delay(200);
+  lightoff_led(P2_3); delay(200);
+  lighton_led(P2_4); delay(200);
+  lightoff_led(P2_4); delay(200);
+  lighton_led(P2_5); delay(200);
+  lightoff_led(P2_5); delay(200);
+  lighton_led(P2_6); delay(200);
+  lightoff_led(P2_6); delay(200);
+  delay(1000);
+
+  // Solo mode
+  // Light all LEDs of player 1
+  lighton_led(P1); delay(200);
+  lightoff_led(P1); delay(200);
+  lighton_led(P2); delay(200);
+  lightoff_led(P2); delay(200);
+  lighton_led(P3); delay(200);
+  lightoff_led(P3); delay(200);
+  lighton_led(P4); delay(200);
+  lightoff_led(P4); delay(200);
+  lighton_led(P5); delay(200);
+  lightoff_led(P5); delay(200);
+  lighton_led(P6); delay(200);
+  lightoff_led(P6); delay(200);
+  lighton_led(P7); delay(200);
+  lightoff_led(P7); delay(200);
+  lighton_led(P8); delay(200);
+  lightoff_led(P8); delay(200);
+  lighton_led(P9); delay(200);
+  lightoff_led(P9); delay(200);
+  lighton_led(P10); delay(200);
+  lightoff_led(P10); delay(200);
+  lighton_led(P11); delay(200);
+  lightoff_led(P11); delay(200);
+  lighton_led(P12); delay(200);
+  lightoff_led(P12); delay(200);
   delay(1000);
 
   // TODO: Whenever a button is pressed, light its LED during 1 second and treat the button as released ("unpressed")
