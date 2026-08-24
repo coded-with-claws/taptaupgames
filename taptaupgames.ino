@@ -1,21 +1,29 @@
+/*
+ * taptaupgames entry point
+ * In loop(), uncomment the game you want to compile.
+ */
+
 
 //#include <Wire.h>
 #include "taptaupgames.h"
 //#include "buttons.h"
-#include "leds.h"
-#include "driver.h"
+#include "src/driver/leds.h"
+#include "src/driver/driver.h"
 
 void setup() {
   // Serial init
   // DISABLED SERIAL: interfers with pins RX/DX which are used for buttons
   //Serial.begin(9600);
-  Serial.print(F("*** TAUPITAUPE ")); Serial.print(VERSION); Serial.println(F(" STARTING ***"));
+  //Serial.print(F("*** TAUPITAUPE ")); Serial.print(VERSION); Serial.println(F(" STARTING ***"));
   init_hardware();
-  Serial.println(F("*** TAUPITAUPE INITIALIZED ***"));
+  //Serial.println(F("*** TAUPITAUPE INITIALIZED ***"));
+  
+  setup_taupitaupe();
 }
 
 void loop() {
   test_buttons_leds();
+  loop_taupitaupe();
 }
 
 /*
