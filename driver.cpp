@@ -1,5 +1,36 @@
 #include "driver.h"
 
+void init_hardware() {
+
+  uint8_t i;
+
+  // Disabled on-board LED
+  pinMode(LED_BUILTIN, OUTPUT); digitalWrite(LED_BUILTIN, 0);
+
+  // LEDs init
+  for (i = 0; i < LED_PINS_NB ; i++) {
+    pinMode(led_pins[i], OUTPUT);
+    digitalWrite(led_pins[i], LOW);
+  }
+
+  // Buttons init
+  for (i = 0; i < BUTTON_PINS_NB ; i++) {
+    //pinMode(in_button_pins[i], INPUT_PULLUP);
+    pinMode(in_button_pins[i], INPUT);
+    //digitalWrite(in_button_pins[i], HIGH); // avoid getting a fake button pressed just after attaching interrupt
+    //digitalWrite(in_button_pins[i], LOW); // avoid getting a fake button pressed just after attaching interrupt
+    //attachInterrupt(digitalPinToInterrupt(in_button_pins[i]), in_button_pin_ISRfuncs[i], FALLING);
+    //attachInterrupt(digitalPinToInterrupt(in_button_pins[i]), in_button_pin_ISRfuncs[i], RISING);
+    //attachInterrupt(digitalPinToInterrupt(in_button_pins[i]), in_button_pin_ISRfuncs[i], CHANGE);
+    Serial.print(F("IN button pin ")); Serial.print(i); Serial.println(F(" initialized"));
+  }
+
+  // every-second ISR routine
+  init_every_second_timer();
+
+  Serial.println(F("Hardware initialized"));
+}
+
 void init_every_second_timer() {
   
   // INITIALIZE TIMER INTERRUPTS

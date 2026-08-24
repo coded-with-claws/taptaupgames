@@ -5,5 +5,7 @@
 #include <avr/interrupt.h>
 
 #include "buttons.h"
+#include "leds.h"
 
+void init_hardware(void);
 void init_every_second_timer(void);
