@@ -3,11 +3,7 @@
  * In loop(), uncomment the game you want to compile.
  */
 
-
-//#include <Wire.h>
 #include "taptaupgames.h"
-//#include "buttons.h"
-#include "src/driver/leds.h"
 #include "src/driver/driver.h"
 
 void setup() {
@@ -23,6 +19,7 @@ void setup() {
 
 void loop() {
   test_buttons_leds();
+  test_buttons();
   loop_taupitaupe();
 }
 

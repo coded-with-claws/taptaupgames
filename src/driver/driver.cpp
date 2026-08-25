@@ -60,12 +60,15 @@ void init_isr_timer() {
 // TIMER VECTOR, gets called once a second (depends on prescaler and match register)
 ISR(TIMER1_COMPA_vect)
 {
-  Serial.println(F("ISR timer called"));
+  //Serial.println(F("ISR timer called"));
 
   //DEBUG: read button pins states
-  bool state;
+  /*bool state;
   for (uint8_t i = 0; i < BUTTON_PINS_NB ; i++) {
     state = digitalRead(in_button_pins[i]);
     Serial.print(F("IN button pin state = ")); Serial.println(state);
-  }
+  }*/
+
+  upd_btn_states();
+  Serial.print(F("Button 0 state = ")); Serial.println(btn_states[0]);
 }
