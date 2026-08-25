@@ -70,5 +70,5 @@ ISR(TIMER1_COMPA_vect)
   }*/
 
   upd_btn_states();
-  Serial.print(F("Button 0 state = ")); Serial.println(btn_states[0]);
+  //Serial.print(F("Button 0 state = ")); Serial.println(btn_states[0]);
 }

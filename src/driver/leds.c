@@ -20,6 +20,7 @@ void lighton_led(uint8_t led_nb) {
   }
   digitalWrite(led_mapping[index], HIGH);
   digitalWrite(led_mapping[index + 1], HIGH);
+  delay(1); // super duper important (otherwise, the light has low intensity)
 }
 
 // Light OFF LED number 0..11
@@ -49,13 +50,13 @@ void test_buttons_leds() {
   delay(1000);
   
   // Light all LEDs one by one
-  for (i = 0; i < LED_NB ; i++) {
+  /*for (i = 0; i < LED_NB ; i++) {
     lighton_led(i);
     delay(200);
     lightoff_led(i);
     delay(200);
   }
-  delay(1000);
+  delay(1000);*/
 
   // Versus mode
   // Light all LEDs of player 1
