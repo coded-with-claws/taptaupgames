@@ -8,4 +8,4 @@
 #include "leds.h"
 
 void init_hardware(void);
-void init_every_second_timer(void);
+void init_isr_timer(void);

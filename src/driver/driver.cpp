@@ -25,25 +25,31 @@ void init_hardware() {
     Serial.print(F("IN button pin ")); Serial.print(i); Serial.println(F(" initialized"));
   }
 
-  // every-second ISR routine
-  init_every_second_timer();
+  // ISR routine to handle inputs
+  init_isr_timer();
 
   Serial.println(F("Hardware initialized"));
 }
 
-void init_every_second_timer() {
+// 50Hz ISR routine (called every 20ms) to handle inputs
+// Calculations are done for a 16 MHz CPU
+void init_isr_timer() {
   
   // INITIALIZE TIMER INTERRUPTS
   cli(); // disable global interrupts
 
   TCCR1A = 0; // set entire TCCR1A register to 0
   TCCR1B = 0; // same for TCCR1B
+  TCCR1B |= (1 << WGM12);
 
-  OCR1A = 15624; // set compare match register to desired timer count. 16 MHz with 1024 prescaler = 15624 counts/s
-  TCCR1B |= (1 << WGM12); // turn on CTC mode. clear timer on compare match
+  // Set CS11 bit for prescaler 8
+  TCCR1B |= (1 << CS11); 
 
-  TCCR1B |= (1 << CS10); // Set CS10 and CS12 bits for 1024 prescaler
-  TCCR1B |= (1 << CS12);
+  //initialize counter value to 0;
+  TCNT1  = 0;
+
+  // set timer count for 50Hz increments (every 20ms)
+  OCR1A = 39999;// = (16*10^6) / (50*8) - 1
 
   TIMSK1 |= (1 << OCIE1A); // enable timer compare interrupt
 
@@ -54,7 +60,7 @@ void init_every_second_timer() {
 // TIMER VECTOR, gets called once a second (depends on prescaler and match register)
 ISR(TIMER1_COMPA_vect)
 {
-  Serial.println(F("every-second-ISR called"));
+  Serial.println(F("ISR timer called"));
 
   //DEBUG: read button pins states
   bool state;
