@@ -10,7 +10,7 @@ void setup_taupitaupe() {
 
 void loop_taupitaupe() {
   // Blink P11 & P12, waiting for choice "Versus or Solo"
-  /*bool game_started = false;
+/*  bool game_started = false;
   while(!game_started) {
     lighton_led(P1_1);
     lighton_led(P2_1);
@@ -21,9 +21,10 @@ void loop_taupitaupe() {
     if(btn_states[P1_1] || btn_states[P2_1]) {
       game_started = true;
     }
-  }*/
+  }
+*/
 
-
+/*
   lighton_led(P1_2);
   while(!btn_states[P1_2]) {
     
@@ -35,9 +36,21 @@ void loop_taupitaupe() {
     
   }
   lightoff_led(P1_3);
+*/
+
 /*
   if(btn_states[P1_2]) {
     lighton_led(P1_2);
   }
 */
+
+    for (uint8_t i = 0; i < BUTTON_NB; i++) {
+      if (btn_states[i]) {
+        lighton_led(i);
+      } else {
+        lightoff_led(i);
+      }
+    }
+
+
 }

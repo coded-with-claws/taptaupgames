@@ -1,6 +1,8 @@
 #include "buttons.h"
 #include "leds.h"
 
+static bool btn_states[BUTTON_NB] = { false };
+
 bool pin_states[BUTTON_PINS_NB];
 uint8_t idx_btn;
 

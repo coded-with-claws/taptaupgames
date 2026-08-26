@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _BUTTONS_h
+#define _BUTTONS_h
+
 //#include <Wire.h>
 #include <Arduino.h>
 
@@ -15,7 +18,9 @@ const uint8_t in_button_pins[BUTTON_PINS_NB] = {
 };
 
 // button states: false = at rest, true = pressed
-static bool btn_states[BUTTON_NB] = { false };
+// must be only declared ("extern")
+// otherwise variable seems duplicated between multiple .ino files
+extern bool btn_states[BUTTON_NB];
 
 // IN button pins Interrupt Service Routines
 /*void in_button_pin1ISR();
@@ -30,4 +35,6 @@ void in_button_pin7ISR();*/
 
 void upd_btn_states(void);
 void test_buttons(void);
+
+#endif
 

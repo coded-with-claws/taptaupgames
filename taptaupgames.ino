@@ -18,8 +18,8 @@ void setup() {
 }
 
 void loop() {
-  test_buttons_leds();
-  test_buttons();
+  //test_buttons_leds();
+  //test_buttons();
   loop_taupitaupe();
 }
 
