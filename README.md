@@ -9,6 +9,6 @@ Button-based system for games like versus-whack-a-mole.
 - Arduino Nano (16MHz - important for ISR calculation)
 
 ### Wiring
-- Arduino A0..3 D7..9 <=> 7 wires for 10 buttons
-- Arduino D1 D0 D2..D6 <=> 7 wires for 10 LEDs (LEDs of buttons)
+- Arduino A0..3 D7..9 <=> 7 wires for 12 buttons
+- Arduino D1 D0 D2..D6 <=> 7 wires for 12 LEDs (LEDs of buttons)
 
