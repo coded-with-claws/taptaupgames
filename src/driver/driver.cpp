@@ -4,8 +4,11 @@ void init_hardware() {
 
   uint8_t i;
 
-  // Disabled on-board LED
+  // Disable on-board LED
   pinMode(LED_BUILTIN, OUTPUT); digitalWrite(LED_BUILTIN, 0);
+
+  // Random seed init
+  randomSeed(analogRead(12));
 
   // LEDs init
   for (i = 0; i < LED_PINS_NB ; i++) {
