@@ -33,6 +33,14 @@ void lightoff_led(uint8_t led_nb) {
   digitalWrite(led_mapping[index + 1], LOW);
 }
 
+void lightoff_all_leds() {
+  uint8_t i;
+
+  for (i = 0; i < LED_NB ; i++) {
+    lightoff_led(i);
+  }
+}
+
 /*
  * Test functions
  */

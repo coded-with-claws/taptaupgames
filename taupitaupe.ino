@@ -24,6 +24,8 @@ void setup_taupitaupe() {
 
 void loop_taupitaupe() {
 
+  lightoff_all_leds();
+
   choose_taupitaupe_solo_vs();
 
   // Game start
@@ -37,7 +39,15 @@ void loop_taupitaupe() {
 }
 
 void choose_taupitaupe_solo_vs() {
-  
+  /*if (is_conflict(5, 7)) {
+     lighton_led(P1_2);
+     delay(5000);
+     lightoff_led(P1_2);
+  } else {
+     lighton_led(P2_2);
+     delay(5000);
+     lightoff_led(P2_2);
+  }*/
   // Blink P11 & P12, waiting for choice "Versus or Solo"
   game_started = false;
   solo_mode = false;
@@ -73,8 +83,10 @@ void taupitaupe_solo() {
   btnP1_last = 999;
   btnP1_pressed = false;
   wrong_btnP1_pressed = false;
+  
   delay(1000);
   start_time = millis();
+  
   while(game_started) {
     
     // choose new button
@@ -155,7 +167,7 @@ void taupitaupe_vs() {
     if (pop_new_btnP1) {
       do {
         btnP1_nbr = random(0, 6);
-      } while (btnP1_nbr == btnP1_last);
+      } while (btnP1_nbr == btnP1_last || is_conflict(btnP1_nbr, btnP2_last));
       btnP1_last = btnP1_nbr;
       pop_new_btnP1 = false;
     }
@@ -164,7 +176,7 @@ void taupitaupe_vs() {
     if (pop_new_btnP2) {
       do {
         btnP2_nbr = random(6, BUTTON_NB);
-      } while (btnP2_nbr == btnP2_last);
+      } while (btnP2_nbr == btnP2_last || is_conflict(btnP1_last, btnP2_nbr));
       btnP2_last = btnP2_nbr;
       pop_new_btnP2 = false;
     }
@@ -216,7 +228,7 @@ void taupitaupe_vs() {
       pop_new_btnP2 = true;
     }
 
-    // end timers ASAP
+    // End of game - end timers ASAP
     if (scoreP1 >= SCORE_MAX) {
       game_started = false;
       P1wins = true;
@@ -232,7 +244,8 @@ void taupitaupe_vs() {
     }
 
     // End of game - calculate game times
-    if (P1wins && P2wins) {
+    if (P1wins || P2wins) {
+      lightoff_all_leds();
       // Case of tie
       if (scoreP1 == scoreP2) {
         game_timeP1 = (end_timeP1 - start_time) / 1000;
@@ -247,8 +260,8 @@ void taupitaupe_vs() {
         game_timeP2 = (end_timeP2 - start_time) / 1000;
       }
     }
-    // End of game - display win
     
+    // End of game - display win
     for (uint8_t j = 0; j < 3; j++) {
       for (i = 0; i < BUTTON_NB; i++) {
         // light LEDs one at a time to avoid conflicts
@@ -265,7 +278,20 @@ void taupitaupe_vs() {
       }
     }
     
-    delay(150); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
+    delay(200); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
   }
+
+}
+
+bool is_conflict(uint8_t btn1, uint8_t btn2) {
+  uint8_t i_btn;
+
+  for (i_btn = 0; i_btn < 36; i_btn++) {
+    if ( (btn1 == led_conflicts[i_btn*2] && btn2 == led_conflicts[i_btn*2+1])
+       || (btn1 == led_conflicts[i_btn*2+1] && btn2 == led_conflicts[i_btn*2])) {
+        return true;
+    }
+  }
+  return false;
 
 }
