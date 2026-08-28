@@ -3,8 +3,8 @@
  */
 
 #define START_BLINK_DURATION 500
-//#define SCORE_MAX 10
-#define SCORE_MAX 3 // DEBUG
+#define SCORE_MAX 10
+//#define SCORE_MAX 3 // DEBUG
 
 // state true means light is on, false means light is off
 //bool led_state[LED_NB] = { false };
