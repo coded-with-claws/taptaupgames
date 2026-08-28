@@ -3,7 +3,7 @@
  */
 
 #define START_BLINK_DURATION 500
-#define SCORE_MAX 10
+#define SCORE_MAX 20
 //#define SCORE_MAX 3 // DEBUG
 
 // state true means light is on, false means light is off
@@ -39,15 +39,6 @@ void loop_taupitaupe() {
 }
 
 void choose_taupitaupe_solo_vs() {
-  /*if (is_conflict(5, 7)) {
-     lighton_led(P1_2);
-     delay(5000);
-     lightoff_led(P1_2);
-  } else {
-     lighton_led(P2_2);
-     delay(5000);
-     lightoff_led(P2_2);
-  }*/
   // Blink P11 & P12, waiting for choice "Versus or Solo"
   game_started = false;
   solo_mode = false;
@@ -167,7 +158,7 @@ void taupitaupe_vs() {
     if (pop_new_btnP1) {
       do {
         btnP1_nbr = random(0, 6);
-      } while (btnP1_nbr == btnP1_last || is_conflict(btnP1_nbr, btnP2_last));
+      } while (btnP1_nbr == btnP1_last);
       btnP1_last = btnP1_nbr;
       pop_new_btnP1 = false;
     }
@@ -176,15 +167,15 @@ void taupitaupe_vs() {
     if (pop_new_btnP2) {
       do {
         btnP2_nbr = random(6, BUTTON_NB);
-      } while (btnP2_nbr == btnP2_last || is_conflict(btnP1_last, btnP2_nbr));
+      } while (btnP2_nbr == btnP2_last);
       btnP2_last = btnP2_nbr;
       pop_new_btnP2 = false;
     }
 
     // light on the buttons and wait for the presses
-    lighton_led(btnP1_nbr);
-    lighton_led(btnP2_nbr);
     while(!btnP1_pressed && !btnP2_pressed) {
+      lighton_led(btnP1_nbr); delay(5); lightoff_led(btnP1_nbr); // light the two LEDs alternately to avoid conflicts
+      lighton_led(btnP2_nbr); delay(5); lightoff_led(btnP2_nbr);
       // scan P1 buttons
       for (i = 0; i < 6; i++) {
         if (btn_states[i]) {
@@ -205,7 +196,7 @@ void taupitaupe_vs() {
           }
         }
       }
-      delay(1); // for ISR to keep working
+      //delay(1); // for ISR to keep working - not needed because of the delays between light on/off
     }
 
     if (btnP1_pressed) {
