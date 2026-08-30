@@ -17,6 +17,7 @@
   unsigned short btnP1_last, btnP2_last;
   bool btnP1_pressed, btnP2_pressed;
   bool wrong_btnP1_pressed, wrong_btnP2_pressed;
+  unsigned long last_pressed_timeP1, last_pressed_timeP2;
   uint8_t i;
   
 void setup_taupitaupe() {
@@ -148,6 +149,8 @@ void taupitaupe_vs() {
   btnP2_pressed = false;
   wrong_btnP1_pressed = false;
   wrong_btnP2_pressed = false;
+  last_pressed_timeP1 = 0;
+  last_pressed_timeP2 = 0;
   
   delay(1000);
   start_time = millis();
@@ -178,7 +181,8 @@ void taupitaupe_vs() {
       lighton_led(btnP2_nbr); delay(5); lightoff_led(btnP2_nbr);
       // scan P1 buttons
       for (i = 0; i < 6; i++) {
-        if (btn_states[i]) {
+        if (btn_states[i] && millis() - last_pressed_timeP1 >= 200) {
+          last_pressed_timeP1 = millis();
           if (i == btnP1_nbr) {
             btnP1_pressed = true;
           } else {
@@ -188,7 +192,8 @@ void taupitaupe_vs() {
       }
       // scan P2 buttons
       for (i = 6; i < BUTTON_NB; i++) {
-        if (btn_states[i]) {
+        if (btn_states[i] && millis() - last_pressed_timeP2 >= 200) {
+          last_pressed_timeP2 = millis();
           if (i == btnP2_nbr) {
             btnP2_pressed = true;
           } else {
@@ -269,7 +274,6 @@ void taupitaupe_vs() {
       }
     }
     
-    delay(200); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
   }
 
 }
