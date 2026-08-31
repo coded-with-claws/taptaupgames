@@ -53,6 +53,8 @@ void init_isr_timer() {
 
   // set timer count for 50Hz increments (every 20ms)
   OCR1A = 39999;// = (16*10^6) / (50*8) - 1
+  //OCR1A = 19999;// = (16*10^6) / (100*8) - 1
+  //OCR1A = 199999;// = (16*10^6) / (10*8) - 1
 
   TIMSK1 |= (1 << OCIE1A); // enable timer compare interrupt
 
