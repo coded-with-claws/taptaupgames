@@ -134,7 +134,7 @@ void taupitaupe_solo() {
       }
     }
 
-    delay(150); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
+    delay(UNPRESS_DELAY); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
   }
 
 }
