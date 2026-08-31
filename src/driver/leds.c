@@ -80,6 +80,34 @@ void test_buttons_leds() {
   }
   delay(1000);*/
 
+  // Solo mode
+  // Light all LEDs of player 1
+  lighton_led(P1); delay(200);
+  lightoff_led(P1); delay(200);
+  lighton_led(P2); delay(200);
+  lightoff_led(P2); delay(200);
+  lighton_led(P3); delay(200);
+  lightoff_led(P3); delay(200);
+  lighton_led(P4); delay(200);
+  lightoff_led(P4); delay(200);
+  lighton_led(P5); delay(200);
+  lightoff_led(P5); delay(200);
+  lighton_led(P6); delay(200);
+  lightoff_led(P6); delay(200);
+  lighton_led(P7); delay(200);
+  lightoff_led(P7); delay(200);
+  lighton_led(P8); delay(200);
+  lightoff_led(P8); delay(200);
+  lighton_led(P9); delay(200);
+  lightoff_led(P9); delay(200);
+  lighton_led(P10); delay(200);
+  lightoff_led(P10); delay(200);
+  lighton_led(P11); delay(200);
+  lightoff_led(P11); delay(200);
+  lighton_led(P12); delay(200);
+  lightoff_led(P12); delay(200);
+  delay(1000);
+  
   // Versus mode
   // Light all LEDs of player 1
   lighton_led(P1_1); delay(200);
@@ -110,34 +138,6 @@ void test_buttons_leds() {
   lightoff_led(P2_6); delay(200);
   delay(1000);
 
-  // Solo mode
-  // Light all LEDs of player 1
-  lighton_led(P1); delay(200);
-  lightoff_led(P1); delay(200);
-  lighton_led(P2); delay(200);
-  lightoff_led(P2); delay(200);
-  lighton_led(P3); delay(200);
-  lightoff_led(P3); delay(200);
-  lighton_led(P4); delay(200);
-  lightoff_led(P4); delay(200);
-  lighton_led(P5); delay(200);
-  lightoff_led(P5); delay(200);
-  lighton_led(P6); delay(200);
-  lightoff_led(P6); delay(200);
-  lighton_led(P7); delay(200);
-  lightoff_led(P7); delay(200);
-  lighton_led(P8); delay(200);
-  lightoff_led(P8); delay(200);
-  lighton_led(P9); delay(200);
-  lightoff_led(P9); delay(200);
-  lighton_led(P10); delay(200);
-  lightoff_led(P10); delay(200);
-  lighton_led(P11); delay(200);
-  lightoff_led(P11); delay(200);
-  lighton_led(P12); delay(200);
-  lightoff_led(P12); delay(200);
-  delay(1000);
-  
   disp_win_anim_solo_recofday();
 
 }
