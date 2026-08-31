@@ -20,7 +20,6 @@ void lighton_led(uint8_t led_nb) {
   }
   digitalWrite(led_mapping[index], HIGH);
   digitalWrite(led_mapping[index + 1], HIGH);
-  delay(1); // super duper important (otherwise, the light has low intensity)
 }
 
 // Light OFF LED number 0..11
