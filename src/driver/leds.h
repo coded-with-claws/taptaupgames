@@ -127,6 +127,9 @@ enum LEDS_SOLO {
   P12 = 5
 };
 
+const enum LEDS_SOLO anim_solo_recofday[12] = {
+  P1, P2, P5, P6, P10, P9, P12, P11, P8, P7, P3, P4
+};
 
 #ifdef __cplusplus
 } // extern "C"

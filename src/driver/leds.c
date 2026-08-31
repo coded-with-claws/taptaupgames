@@ -41,6 +41,21 @@ void lightoff_all_leds() {
 }
 
 /*
+ * Win animation functions
+ */
+
+// Win animation - SOLO - Record of the day
+void disp_win_anim_solo_recofday() {
+  uint8_t i, j;
+  for (i = 0; i < 5 ; i++) {
+    for (j = 0; j < 12 ; j++) {
+      lighton_led(anim_solo_recofday[j]); delay(200);
+      lightoff_led(anim_solo_recofday[j]); delay(200);
+    }
+  }
+}
+
+/*
  * Test functions
  */
 void test_buttons_leds() {
@@ -122,6 +137,7 @@ void test_buttons_leds() {
   lighton_led(P12); delay(200);
   lightoff_led(P12); delay(200);
   delay(1000);
+  
+  disp_win_anim_solo_recofday();
 
-  // TODO: Whenever a button is pressed, light its LED during 1 second and treat the button as released ("unpressed")
 }
