@@ -11,7 +11,6 @@ extern "C"{
 
 
 #include <Arduino.h>
-//#include <Wire.h>
 
 /*
  * LEDs (of buttons) settings
@@ -93,6 +92,8 @@ const uint8_t led_conflicts[] = {
 void lighton_led(uint8_t led_nb);
 void lightoff_led(uint8_t led_nb);
 void lightoff_all_leds(void);
+void disp_win_anim_solo_recofday(void);
+void disp_win_anim_vs(bool, bool);
 void test_buttons_leds(void);
 
 // label LEDs for Versus games: P11 = player1 LED1, P12 = player1 LED2, etc
@@ -127,8 +128,12 @@ enum LEDS_SOLO {
   P12 = 5
 };
 
-const enum LEDS_SOLO anim_solo_recofday[12] = {
+const enum LEDS_SOLO anim_win_solo_recofday[12] = {
   P1, P2, P5, P6, P10, P9, P12, P11, P8, P7, P3, P4
+};
+
+const enum LEDS_VS anim_win_vs[16] = {
+  P1_1, P2_1, P1_2, P2_2, P1_3, P2_3, P1_4, P2_4, P1_3, P2_3, P1_6, P2_6, P1_5, P2_5, P1_2, P2_2
 };
 
 #ifdef __cplusplus

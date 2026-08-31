@@ -49,8 +49,35 @@ void disp_win_anim_solo_recofday() {
   uint8_t i, j;
   for (i = 0; i < 5 ; i++) {
     for (j = 0; j < 12 ; j++) {
-      lighton_led(anim_solo_recofday[j]); delay(200);
-      lightoff_led(anim_solo_recofday[j]); delay(200);
+      // light LEDs one at a time to avoid conflicts
+      lighton_led(anim_win_solo_recofday[j]); delay(150);
+      lightoff_led(anim_win_solo_recofday[j]); delay(150);
+    }
+  }
+}
+
+// Win animation - VERSUS
+void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
+  uint8_t i, j;
+  for (j = 0; j < 5; j++) {
+    for (i = 0; i < 16; i++) {
+      // light LEDs one at a time to avoid conflicts
+      if (is_p1_win && (i % 2 == 0)) {
+        lighton_led(anim_win_vs[i]);
+        delay(100);
+        if (!is_p2_win) {
+          delay(50);
+        }
+        lightoff_led(anim_win_vs[i]);
+      }
+      if (is_p2_win && (i % 2 == 1)) {
+        lighton_led(anim_win_vs[i]);
+        delay(100);
+        if (!is_p1_win) {
+          delay(50);
+        }
+        lightoff_led(anim_win_vs[i]);
+      }
     }
   }
 }
@@ -139,5 +166,8 @@ void test_buttons_leds() {
   delay(1000);
 
   disp_win_anim_solo_recofday();
+  disp_win_anim_vs(true, false);
+  disp_win_anim_vs(false, true);
+  disp_win_anim_vs(true, true);
 
 }
