@@ -2,9 +2,15 @@
  * TAUPITAUPE - game for taptaupgames
  */
 
-#define START_BLINK_DURATION 500
+// SETTINGS
 #define SCORE_MAX 20
-//#define SCORE_MAX 3 // DEBUG
+//#define SCORE_MAX 5 // DEBUG
+
+#define START_BLINK_DURATION 500
+#define UNPRESS_DELAY 300
+
+#define SOLO_START_BTN P1_6
+#define VS_START_BTN P2_6
 
 // state true means light is on, false means light is off
 //bool led_state[LED_NB] = { false };
@@ -40,27 +46,27 @@ void loop_taupitaupe() {
 }
 
 void choose_taupitaupe_solo_vs() {
-  // Blink P11 & P12, waiting for choice "Versus or Solo"
+  // Blink SOLO_START_BTN & P26, waiting for choice "Versus or Solo"
   game_started = false;
   solo_mode = false;
   while(!game_started) {
 
-    lighton_led(P1_1);
-    lighton_led(P2_1);
+    lighton_led(SOLO_START_BTN);
+    lighton_led(VS_START_BTN);
     tmp_time = millis();
-    while(!btn_states[P1_1] && !btn_states[P2_1] && millis() - tmp_time < START_BLINK_DURATION) {
+    while(!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
       delay(20); // wait for next ISR call
     }
-    lightoff_led(P1_1);
-    lightoff_led(P2_1);
+    lightoff_led(SOLO_START_BTN);
+    lightoff_led(VS_START_BTN);
     tmp_time = millis();
-    while(!btn_states[P1_1] && !btn_states[P2_1] && millis() - tmp_time < START_BLINK_DURATION) {
+    while(!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
       delay(20); // wait for next ISR call
     }
 
-    if(btn_states[P1_1] || btn_states[P2_1]) {
+    if(btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
       game_started = true;
-      if (btn_states[P1_1]) {
+      if (btn_states[SOLO_START_BTN]) {
         solo_mode = true;
       }
     }
@@ -181,7 +187,7 @@ void taupitaupe_vs() {
       lighton_led(btnP2_nbr); delay(5); lightoff_led(btnP2_nbr);
       // scan P1 buttons
       for (i = 0; i < 6; i++) {
-        if (btn_states[i] && millis() - last_pressed_timeP1 >= 200) {
+        if (btn_states[i] && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
           last_pressed_timeP1 = millis();
           if (i == btnP1_nbr) {
             btnP1_pressed = true;
@@ -192,7 +198,7 @@ void taupitaupe_vs() {
       }
       // scan P2 buttons
       for (i = 6; i < BUTTON_NB; i++) {
-        if (btn_states[i] && millis() - last_pressed_timeP2 >= 200) {
+        if (btn_states[i] && millis() - last_pressed_timeP2 >= UNPRESS_DELAY) {
           last_pressed_timeP2 = millis();
           if (i == btnP2_nbr) {
             btnP2_pressed = true;
