@@ -245,8 +245,9 @@ void taupitaupe_vs() {
       end_timeP2 = millis();
     }
 
-    // End of game - calculate game times
+    // End of game
     if (P1wins || P2wins) {
+      // calculate game times
       lightoff_all_leds();
       // Case of tie
       if (scoreP1 == scoreP2) {
@@ -261,21 +262,21 @@ void taupitaupe_vs() {
         game_timeP1 = 999999;
         game_timeP2 = (end_timeP2 - start_time) / 1000;
       }
-    }
-    
-    // End of game - display win
-    for (uint8_t j = 0; j < 3; j++) {
-      for (i = 0; i < BUTTON_NB; i++) {
-        // light LEDs one at a time to avoid conflicts
-        if (P1wins && i < 6) {
-          lighton_led(i);
-          delay(100);
-          lightoff_led(i);
-        }
-        if (P2wins && i >= 6) {
-          lighton_led(i);
-          delay(100);
-          lightoff_led(i);
+
+    // display win
+      for (uint8_t j = 0; j < 3; j++) {
+        for (i = 0; i < BUTTON_NB; i++) {
+          // light LEDs one at a time to avoid conflicts
+          if (P1wins && i < 6) {
+            lighton_led(i);
+            delay(200);
+            lightoff_led(i);
+          }
+          if (P2wins && i >= 6) {
+            lighton_led(i);
+            delay(200);
+            lightoff_led(i);
+          }
         }
       }
     }
