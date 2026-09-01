@@ -22,7 +22,7 @@
   unsigned long btnP1_nbr, btnP2_nbr;
   unsigned short btnP1_last, btnP2_last;
   bool btnP1_pressed, btnP2_pressed;
-  bool wrong_btnP1_pressed, wrong_btnP2_pressed;
+  bool wrong_btnP1_pressed;
   unsigned long last_pressed_timeP1, last_pressed_timeP2;
   uint8_t i;
   
@@ -153,8 +153,6 @@ void taupitaupe_vs() {
   btnP2_last = 999;
   btnP1_pressed = false;
   btnP2_pressed = false;
-  wrong_btnP1_pressed = false;
-  wrong_btnP2_pressed = false;
   last_pressed_timeP1 = 0;
   last_pressed_timeP2 = 0;
   
@@ -186,53 +184,31 @@ void taupitaupe_vs() {
       lighton_led(btnP1_nbr); delay(5); lightoff_led(btnP1_nbr); // light the two LEDs alternately to avoid conflicts
       lighton_led(btnP2_nbr); delay(5); lightoff_led(btnP2_nbr);
       // scan P1 buttons
-      if (millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
-        for (i = 0; i < 6; i++) {
-          if (btn_states[i]) {
-            if (i == btnP1_nbr) {
-              btnP1_pressed = true;
-            } else {
-              wrong_btnP1_pressed = true;
-            }
-            last_pressed_timeP1 = millis();
-          }
-        }
+      if (millis() - last_pressed_timeP1 >= UNPRESS_DELAY && btn_states[btnP1_nbr]) {
+        btnP1_pressed = true;
+        last_pressed_timeP1 = millis();
       }
       
       // scan P2 buttons
-      if (millis() - last_pressed_timeP2 >= UNPRESS_DELAY) {
-        for (i = 6; i < BUTTON_NB; i++) {
-          if (btn_states[i]) {
-            if (i == btnP2_nbr) {
-              btnP2_pressed = true;
-            } else {
-              wrong_btnP2_pressed = true;
-            }
-            last_pressed_timeP2 = millis();
-          }
-        }
+      if (millis() - last_pressed_timeP2 >= UNPRESS_DELAY && btn_states[btnP2_nbr]) {
+        btnP2_pressed = true;
+        last_pressed_timeP2 = millis();
       }
       
       //delay(1); // for ISR to keep working - not needed because of the delays between light on/off
     }
 
     if (btnP1_pressed) {
-      if (!wrong_btnP1_pressed) {
-        scoreP1++;
-      }
+      scoreP1++;
       lightoff_led(btnP1_nbr);
       btnP1_pressed = false;
-      wrong_btnP1_pressed = false;
       pop_new_btnP1 = true;
     }
 
     if (btnP2_pressed) {
-      if (!wrong_btnP2_pressed) {
-        scoreP2++;
-      }
+      scoreP2++;
       lightoff_led(btnP2_nbr);
       btnP2_pressed = false;
-      wrong_btnP2_pressed = false;
       pop_new_btnP2 = true;
     }
 
