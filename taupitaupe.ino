@@ -186,27 +186,33 @@ void taupitaupe_vs() {
       lighton_led(btnP1_nbr); delay(5); lightoff_led(btnP1_nbr); // light the two LEDs alternately to avoid conflicts
       lighton_led(btnP2_nbr); delay(5); lightoff_led(btnP2_nbr);
       // scan P1 buttons
-      for (i = 0; i < 6; i++) {
-        if (btn_states[i] && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
-          last_pressed_timeP1 = millis();
-          if (i == btnP1_nbr) {
-            btnP1_pressed = true;
-          } else {
-            wrong_btnP1_pressed = true;
+      if (millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
+        for (i = 0; i < 6; i++) {
+          if (btn_states[i]) {
+            if (i == btnP1_nbr) {
+              btnP1_pressed = true;
+            } else {
+              wrong_btnP1_pressed = true;
+            }
+            last_pressed_timeP1 = millis();
           }
         }
       }
+      
       // scan P2 buttons
-      for (i = 6; i < BUTTON_NB; i++) {
-        if (btn_states[i] && millis() - last_pressed_timeP2 >= UNPRESS_DELAY) {
-          last_pressed_timeP2 = millis();
-          if (i == btnP2_nbr) {
-            btnP2_pressed = true;
-          } else {
-            wrong_btnP2_pressed = true;
+      if (millis() - last_pressed_timeP2 >= UNPRESS_DELAY) {
+        for (i = 6; i < BUTTON_NB; i++) {
+          if (btn_states[i]) {
+            if (i == btnP2_nbr) {
+              btnP2_pressed = true;
+            } else {
+              wrong_btnP2_pressed = true;
+            }
+            last_pressed_timeP2 = millis();
           }
         }
       }
+      
       //delay(1); // for ISR to keep working - not needed because of the delays between light on/off
     }
 
