@@ -20,6 +20,16 @@ void loop() {
   //test_buttons_leds();
   //test_buttons();
   loop_taupitaupe();
+
+  // DEBUG - print button states
+  /*Serial.print(F("Btn states: ")); 
+  for (uint8_t i = 0; i < 12; i++) {
+    Serial.print(btn_states[i]); Serial.print(F(" "));
+  }
+  Serial.println();
+  delay(100);*/
+  // END OF DEBUG
+  
 }
 
 /*
