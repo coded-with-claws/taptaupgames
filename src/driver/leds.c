@@ -50,8 +50,8 @@ void disp_win_anim_solo_recofday() {
   for (i = 0; i < 5 ; i++) {
     for (j = 0; j < 12 ; j++) {
       // light LEDs one at a time to avoid conflicts
-      lighton_led(anim_win_solo_recofday[j]); delay(150);
-      lightoff_led(anim_win_solo_recofday[j]); delay(150);
+      lighton_led(anim_win_solo_recofday[j]); delay(200);
+      lightoff_led(anim_win_solo_recofday[j]); delay(200);
     }
   }
 }
@@ -64,7 +64,7 @@ void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
       // light LEDs one at a time to avoid conflicts
       if (is_p1_win && (i % 2 == 0)) {
         lighton_led(anim_win_vs[i]);
-        delay(100);
+        delay(150);
         if (!is_p2_win) {
           delay(50);
         }
@@ -72,7 +72,7 @@ void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
       }
       if (is_p2_win && (i % 2 == 1)) {
         lighton_led(anim_win_vs[i]);
-        delay(100);
+        delay(150);
         if (!is_p1_win) {
           delay(50);
         }
