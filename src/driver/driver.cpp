@@ -77,3 +77,17 @@ ISR(TIMER1_COMPA_vect)
   upd_btn_states();
   //Serial.print(F("Button 0 state = ")); Serial.println(btn_states[0]);
 }
+
+bool is_conflict(uint8_t btn1, uint8_t btn2) {
+  uint8_t i_btn;
+
+  for (i_btn = 0; i_btn < 36; i_btn++) {
+    if ( (btn1 == led_conflicts[i_btn*2] && btn2 == led_conflicts[i_btn*2+1])
+       || (btn1 == led_conflicts[i_btn*2+1] && btn2 == led_conflicts[i_btn*2])) {
+        return true;
+    }
+  }
+  return false;
+
+}
+

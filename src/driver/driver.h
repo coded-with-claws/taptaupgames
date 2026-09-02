@@ -12,6 +12,7 @@
 
 void init_hardware(void);
 void init_isr_timer(void);
+bool is_conflict(uint8_t, uint8_t);
 
 #endif
 
