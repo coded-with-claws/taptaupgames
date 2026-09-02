@@ -60,7 +60,7 @@ void disp_win_anim_solo_recofday() {
 void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
   uint8_t i, j;
   for (j = 0; j < 5; j++) {
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < 20; i++) {
       // light LEDs one at a time to avoid conflicts
       if (is_p1_win && (i % 2 == 0)) {
         lighton_led(anim_win_vs[i]);
