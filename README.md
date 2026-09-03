@@ -7,7 +7,8 @@ Button-based system for games like versus-whack-a-mole.
 
 ## Hardware
 - Arduino Nano (16MHz - important for ISR calculation)
-- 12 arcade buttons with LEDs
+- 12 big arcade buttons with LEDs
+  - usually they are provided for 12V so you have to change resistors for 5V (for the light to be bright)
 
 ### Electronic schematics
 - see `doc/electronic_schematics/` for the buttons and the LEDs of the buttons

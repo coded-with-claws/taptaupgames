@@ -6,8 +6,8 @@
 ## Start-up
 
 When the game is powered up, it starts depending on button already pressed:
-- if the Red button of Player 1 is pressed (`P1_3`), it runs diagnostic mode for LEDs,
-- if the Red button of Player 2 is pressed (`P2_3`), it runs diagnostic mode for buttons,
+- if the White button of Player 1 is pressed (`P1_1`), it runs diagnostic mode for LEDs,
+- if the White button of Player 2 is pressed (`P2_1`), it runs diagnostic mode for buttons,
 - if no button is pressed, it automatically starts the game `taupitaupe`.
 
 ### Diagnostic mode

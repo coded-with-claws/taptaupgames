@@ -5,8 +5,8 @@
 
 #include "src/driver/driver.h"
 
-#define GAMECHOICE_BTN_DIAG_LEDS P1_3
-#define GAMECHOICE_BTN_DIAG_BUTTONS P2_3
+#define GAMECHOICE_BTN_DIAG_LEDS P1_1
+#define GAMECHOICE_BTN_DIAG_BUTTONS P2_1
 
 void setup() {
   // Serial init
