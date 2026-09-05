@@ -18,13 +18,7 @@ void init_hardware() {
 
   // Buttons init
   for (i = 0; i < BUTTON_PINS_NB ; i++) {
-    //pinMode(in_button_pins[i], INPUT_PULLUP);
     pinMode(in_button_pins[i], INPUT);
-    //digitalWrite(in_button_pins[i], HIGH); // avoid getting a fake button pressed just after attaching interrupt
-    //digitalWrite(in_button_pins[i], LOW); // avoid getting a fake button pressed just after attaching interrupt
-    //attachInterrupt(digitalPinToInterrupt(in_button_pins[i]), in_button_pin_ISRfuncs[i], FALLING);
-    //attachInterrupt(digitalPinToInterrupt(in_button_pins[i]), in_button_pin_ISRfuncs[i], RISING);
-    //attachInterrupt(digitalPinToInterrupt(in_button_pins[i]), in_button_pin_ISRfuncs[i], CHANGE);
     Serial.print(F("IN button pin ")); Serial.print(i); Serial.println(F(" initialized"));
   }
 
