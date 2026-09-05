@@ -1,6 +1,6 @@
 /*
  * taptaupgames entry point
- * In loop(), uncomment the game you want to compile.
+ * Push buttons at startup to run game / diag.
  */
 
 #include "src/driver/driver.h"
