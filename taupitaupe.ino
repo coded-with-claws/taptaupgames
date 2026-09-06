@@ -6,8 +6,9 @@
 #define SCORE_MAX 20
 //#define SCORE_MAX 5 // DEBUG
 
-#define START_BLINK_DURATION 500
 #define UNPRESS_DELAY 300
+#define START_BLINK_DURATION 500
+#define START_PRESS_DURATION 2000
 
 #define SOLO_START_BTN P1_6
 #define VS_START_BTN P2_6
@@ -45,10 +46,17 @@ void loop_taupitaupe() {
 
 }
 
+// Blink SOLO_START_BTN & VS_START_BTN, waiting for choice "Versus or Solo"
 void choose_taupitaupe_solo_vs() {
-  // Blink SOLO_START_BTN & P26, waiting for choice "Versus or Solo"
+  uint8_t i;
+  bool solo_btn_already_pressed = false;
+  bool vs_btn_already_pressed = false;
+  unsigned long last_press_solo_btn = millis();
+  unsigned long last_press_vs_btn = millis();
+  
   game_started = false;
   solo_mode = false;
+  
   while(!game_started) {
 
     lighton_led(SOLO_START_BTN);
@@ -64,13 +72,47 @@ void choose_taupitaupe_solo_vs() {
       delay(20); // wait for next ISR call
     }
 
-    if(btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
-      game_started = true;
-      if (btn_states[SOLO_START_BTN]) {
-        solo_mode = true;
-      }
+    if (btn_states[SOLO_START_BTN] && !solo_btn_already_pressed) {
+      solo_btn_already_pressed = true;
+      last_press_solo_btn = millis();
+    } else if (!btn_states[SOLO_START_BTN]) {
+      solo_btn_already_pressed = false;
+    }
+      
+    if (btn_states[VS_START_BTN] && !vs_btn_already_pressed) {
+      vs_btn_already_pressed = true;
+      last_press_vs_btn = millis();
+    } else if (!btn_states[VS_START_BTN]) {
+      vs_btn_already_pressed = false;
     }
 
+    if(btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
+      
+      if (solo_btn_already_pressed && !vs_btn_already_pressed && millis() - last_press_solo_btn >= START_PRESS_DURATION) {
+          // only solo button was pressed enough time => solo mode starts
+          game_started = true;
+          solo_mode = true;
+          lightoff_led(VS_START_BTN);
+          for (i = 0; i < 10; i++) {
+            lightoff_led(SOLO_START_BTN); delay(50);
+            lighton_led(SOLO_START_BTN); delay(50);
+          }
+          lightoff_led(SOLO_START_BTN);
+          return;
+      }
+      if (solo_btn_already_pressed && vs_btn_already_pressed
+          && (millis() - last_press_solo_btn >= START_PRESS_DURATION || millis() - last_press_vs_btn >= START_PRESS_DURATION)) {
+          // both buttons were pressed enough time => vs mode starts
+          game_started = true;
+          for (i = 0; i < 10; i++) {
+            lightoff_led(SOLO_START_BTN); lighton_led(VS_START_BTN); delay(50);
+            lightoff_led(VS_START_BTN); lighton_led(SOLO_START_BTN); delay(50);
+          }
+          lightoff_led(SOLO_START_BTN);
+          return;
+      }
+      
+    }
   }
 }
 
