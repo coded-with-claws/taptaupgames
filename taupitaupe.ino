@@ -13,6 +13,8 @@
 #define SOLO_START_BTN P1_6
 #define VS_START_BTN P2_6
 
+#define TAUPITAUPE_WR_EEADDR 0 // EEPROM address for world record highscore (unsigned long)
+
 // state true means light is on, false means light is off
 //bool led_state[LED_NB] = { false };
 
@@ -26,9 +28,17 @@
   bool wrong_btnP1_pressed;
   unsigned long last_pressed_timeP1, last_pressed_timeP2;
   uint8_t i;
+  // highscores
   unsigned long game_timeP1_recofday = 4294967295; // max value of unsigned long
+  unsigned long game_timeP1_wr;
   
 void setup_taupitaupe() {
+  // load world record highscore from eeprom
+  EEPROM.get(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
+  if (game_timeP1_wr == 0) {
+    // no highscore available (case of EEPROM cleared)
+    game_timeP1_wr = 4294967295; // max value of unsigned long
+  }
 }
 
 void loop_taupitaupe() {
@@ -168,8 +178,12 @@ void taupitaupe_solo() {
       game_started = false;
       game_timeP1 = (end_timeP1 - start_time) / 1000;
 
-      // display normal or record of the day animation
-      if (game_timeP1 < game_timeP1_recofday) { // record of the day
+      // display animation: normal or record of the day or world record
+      if (game_timeP1 < game_timeP1_wr) { // world record
+        game_timeP1_wr = game_timeP1;
+        EEPROM.put(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
+        disp_win_anim_solo_wr();
+      } else if (game_timeP1 < game_timeP1_recofday) { // record of the day
         game_timeP1_recofday = game_timeP1;
         disp_win_anim_solo_recofday();
       } else { // normal win
