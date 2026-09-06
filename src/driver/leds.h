@@ -91,8 +91,11 @@ const uint8_t led_conflicts[] = {
 
 void lighton_led(uint8_t led_nb);
 void lightoff_led(uint8_t led_nb);
+void lighton_all_leds(void);
 void lightoff_all_leds(void);
+void disp_win_anim_solo_normal(void);
 void disp_win_anim_solo_recofday(void);
+void disp_win_anim_solo_wr(void);
 void disp_win_anim_vs(bool, bool);
 void test_buttons_leds(void);
 
@@ -129,6 +132,10 @@ enum LEDS_SOLO {
 };
 
 const enum LEDS_SOLO anim_win_solo_recofday[12] = {
+  P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12
+};
+
+const enum LEDS_SOLO anim_win_solo_wr[12] = {
   P1, P2, P5, P6, P10, P9, P12, P11, P8, P7, P3, P4
 };
 

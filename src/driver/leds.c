@@ -32,6 +32,14 @@ void lightoff_led(uint8_t led_nb) {
   digitalWrite(led_mapping[index + 1], LOW);
 }
 
+void lighton_all_leds() {
+  uint8_t i;
+
+  for (i = 0; i < LED_NB ; i++) {
+    lighton_led(i);
+  }
+}
+
 void lightoff_all_leds() {
   uint8_t i;
 
@@ -44,17 +52,58 @@ void lightoff_all_leds() {
  * Win animation functions
  */
 
+// Win animation - SOLO - Normal (just end of game)
+void disp_win_anim_solo_normal() {
+  uint8_t i;
+  for (i = 0; i < 2 ; i++) {
+    lightoff_all_leds();
+    delay(100);
+    lighton_all_leds();
+    delay(100);
+  }
+  lightoff_all_leds();
+}
+
 // Win animation - SOLO - Record of the day
 void disp_win_anim_solo_recofday() {
   uint8_t i, j;
-  for (i = 0; i < 5 ; i++) {
+  for (i = 0; i < 5; i++) {
     for (j = 0; j < 12 ; j++) {
       // light LEDs one at a time to avoid conflicts
-      lighton_led(anim_win_solo_recofday[j]); delay(200);
-      lightoff_led(anim_win_solo_recofday[j]); delay(200);
+      lighton_led(anim_win_solo_recofday[j]); delay(100);
+      lightoff_led(anim_win_solo_recofday[j]); delay(100);
+    }
+/*
+    for (i = 0; i < LED_NB; i++) {
+      lighton_led(i);
+      delay(100);
+      lightoff_led(i);
+    }
+    */
+  }
+}
+
+// Win animation - SOLO - World record
+void disp_win_anim_solo_wr() {
+  uint8_t i, j, k;
+  for (i = 0; i < 10 ; i++) {
+    for (j = 0; j < 12 ; j++) {
+      // light LEDs one at a time to avoid conflicts
+      lighton_led(anim_win_solo_wr[j]); delay(100);
+      lightoff_led(anim_win_solo_wr[j]); delay(100);
+    }
+    if (i % 3 == 0) {
+      for (k = 0; k < 5 ; k++) {
+        lightoff_all_leds();
+        delay(100);
+        lighton_all_leds();
+        delay(100);
+      }
+      lightoff_all_leds();
     }
   }
 }
+
 
 // Win animation - VERSUS
 void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
@@ -165,7 +214,9 @@ void test_buttons_leds() {
   lightoff_led(P2_6); delay(200);
   delay(1000);
 
+  disp_win_anim_solo_normal();
   disp_win_anim_solo_recofday();
+  disp_win_anim_solo_wr();
   disp_win_anim_vs(true, false);
   disp_win_anim_vs(false, true);
   disp_win_anim_vs(true, true);

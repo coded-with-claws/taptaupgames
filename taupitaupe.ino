@@ -26,6 +26,7 @@
   bool wrong_btnP1_pressed;
   unsigned long last_pressed_timeP1, last_pressed_timeP2;
   uint8_t i;
+  unsigned long game_timeP1_recofday = 4294967295; // max value of unsigned long
   
 void setup_taupitaupe() {
 }
@@ -166,13 +167,13 @@ void taupitaupe_solo() {
       end_timeP1 = millis();
       game_started = false;
       game_timeP1 = (end_timeP1 - start_time) / 1000;
-      
-      for (uint8_t j = 0; j < 3; j++) {
-        for (i = 0; i < BUTTON_NB; i++) {
-          lighton_led(i);
-          delay(100);
-          lightoff_led(i);
-        }
+
+      // display normal or record of the day animation
+      if (game_timeP1 < game_timeP1_recofday) { // record of the day
+        game_timeP1_recofday = game_timeP1;
+        disp_win_anim_solo_recofday();
+      } else { // normal win
+        disp_win_anim_solo_normal();
       }
     }
 
