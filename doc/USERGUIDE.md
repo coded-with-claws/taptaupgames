@@ -8,6 +8,7 @@
 When the game is powered up, it starts depending on button already pressed:
 - if the White button of Player 1 is pressed (`P1_1`), it runs diagnostic mode for LEDs,
 - if the White button of Player 2 is pressed (`P2_1`), it runs diagnostic mode for buttons,
+- if both Red buttons are pressed (`P1_3` and `P2_3`), it clears world record highscore,
 - if no button is pressed, it automatically starts the game `taupitaupe`.
 
 ### Diagnostic mode
@@ -22,10 +23,11 @@ In solo mode, you play whack-a-mole with all the buttons. You have to hit a scor
 In versus mode, each player plays whack-a-mole on their side. The first player to hit a score of 20 wins.
 After a game, the choice is up again between solo and versus.
 
-Solo mode highscore:
-(WIP)
-There is a highscore "of the day" (= since last power up), and a highscore of ever: "world record".
-When the game is powered up, the highest score of the day is clear (zero), but the world record is already memorized.
+#### Solo mode highscore
+There are two highscores:
+- the highscore "of the day" (= since last power up),
+- the highscore of ever: "world record".
+When the game is powered up, the highest score of the day is cleared (zero), but the world record is already memorized (EEPROM).
 When a player beats the score of the day, there is a special win animation.
-When a player beats the world record, there is another special win animation.
+When a player beats the world record, there is an even more special win animation.
 
