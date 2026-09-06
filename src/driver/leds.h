@@ -3,12 +3,6 @@
 #ifndef _LEDS_h
 #define _LEDS_h                   
 
-#ifdef __cplusplus
-
-extern "C"{
-#endif
-
-
 
 #include <Arduino.h>
 
@@ -142,9 +136,5 @@ const enum LEDS_SOLO anim_win_solo_wr[12] = {
 const enum LEDS_VS anim_win_vs[20] = {
   P1_1, P2_1, P1_2, P2_2, P1_5, P2_5, P1_6, P2_6, P1_3, P2_3, P1_4, P2_4, P1_3, P2_3, P1_6, P2_6, P1_5, P2_5, P1_2, P2_2
 };
-
-#ifdef __cplusplus
-} // extern "C"
-#endif
 
 #endif
