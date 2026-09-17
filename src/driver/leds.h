@@ -125,8 +125,8 @@ enum LEDS_SOLO {
   P12 = 5
 };
 
-const enum LEDS_SOLO anim_win_solo_recofday[12] = {
-  P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12
+const enum LEDS_SOLO anim_win_solo_recofday[4] = {
+  P4, P5, P9, P8
 };
 
 const enum LEDS_SOLO anim_win_solo_wr[12] = {

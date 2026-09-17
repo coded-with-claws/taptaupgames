@@ -55,31 +55,33 @@ void lightoff_all_leds() {
 // Win animation - SOLO - Normal (just end of game)
 void disp_win_anim_solo_normal() {
   uint8_t i;
-  for (i = 0; i < 2 ; i++) {
+  for (i = 0; i < 3 ; i++) {
     lightoff_all_leds();
-    delay(100);
+    delay(300);
     lighton_all_leds();
-    delay(100);
+    delay(300);
   }
   lightoff_all_leds();
 }
 
 // Win animation - SOLO - Record of the day
 void disp_win_anim_solo_recofday() {
-  uint8_t i, j;
-  for (i = 0; i < 5; i++) {
-    for (j = 0; j < 12 ; j++) {
+  uint8_t i, j, k;
+  for (i = 0; i < 10; i++) {
+    for (j = 0; j < 4 ; j++) {
       // light LEDs one at a time to avoid conflicts
       lighton_led(anim_win_solo_recofday[j]); delay(100);
       lightoff_led(anim_win_solo_recofday[j]); delay(100);
     }
-/*
-    for (i = 0; i < LED_NB; i++) {
-      lighton_led(i);
-      delay(100);
-      lightoff_led(i);
+    if (i % 3 == 0) {
+      for (k = 0; k < 5 ; k++) {
+        lightoff_all_leds();
+        delay(100);
+        lighton_all_leds();
+        delay(100);
+      }
+      lightoff_all_leds();
     }
-    */
   }
 }
 
