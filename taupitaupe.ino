@@ -31,10 +31,12 @@
   unsigned long last_pressed_timeP1, last_pressed_timeP2;
   uint8_t i;
   // highscores
-  unsigned long game_timeP1_recofday = 4294967295; // max value of unsigned long
+  unsigned long game_timeP1_recofday; // max value of unsigned long
   unsigned long game_timeP1_wr;
   
 void setup_taupitaupe() {
+  game_timeP1_recofday = 4294967295; // max value of unsigned long
+  
   // load world record highscore from eeprom
   EEPROM.get(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
   if (game_timeP1_wr == 0) {
