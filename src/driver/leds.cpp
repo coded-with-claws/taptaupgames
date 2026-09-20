@@ -67,13 +67,13 @@ void disp_win_anim_solo_normal() {
 // Win animation - SOLO - Record of the day
 void disp_win_anim_solo_recofday() {
   uint8_t i, j, k;
-  for (i = 0; i < 10; i++) {
+  for (i = 0; i < 9; i++) {
     for (j = 0; j < 4 ; j++) {
       // light LEDs one at a time to avoid conflicts
       lighton_led(anim_win_solo_recofday[j]); delay(100);
       lightoff_led(anim_win_solo_recofday[j]); delay(100);
     }
-    if (i % 3 == 0) {
+    if (i % 3 == 2) {
       for (k = 0; k < 5 ; k++) {
         lightoff_all_leds();
         delay(100);
@@ -88,13 +88,13 @@ void disp_win_anim_solo_recofday() {
 // Win animation - SOLO - World record
 void disp_win_anim_solo_wr() {
   uint8_t i, j, k;
-  for (i = 0; i < 10 ; i++) {
+  for (i = 0; i < 9 ; i++) {
     for (j = 0; j < 12 ; j++) {
       // light LEDs one at a time to avoid conflicts
       lighton_led(anim_win_solo_wr[j]); delay(100);
       lightoff_led(anim_win_solo_wr[j]); delay(100);
     }
-    if (i % 3 == 0) {
+    if (i % 3 == 2) {
       for (k = 0; k < 5 ; k++) {
         lightoff_all_leds();
         delay(100);
