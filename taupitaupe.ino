@@ -3,8 +3,10 @@
  */
 
 // SETTINGS
-#define SCORE_MAX 20
-//#define SCORE_MAX 5 // DEBUG
+#define SCORE_MAX_SOLO 20
+#define SCORE_MAX_VS 30
+//#define SCORE_MAX_SOLO 5 // DEBUG
+//#define SCORE_MAX_VS 5 // DEBUG
 
 #define UNPRESS_DELAY 300
 #define START_BLINK_DURATION 500
@@ -58,6 +60,7 @@ void loop_taupitaupe() {
 }
 
 // Blink SOLO_START_BTN & VS_START_BTN, waiting for choice "Versus or Solo"
+// Then sets solo_mode boolean accordingly
 void choose_taupitaupe_solo_vs() {
   uint8_t i;
   bool solo_btn_already_pressed = false;
@@ -173,7 +176,7 @@ void taupitaupe_solo() {
     lightoff_led(btnP1_nbr);
 
     // End of game
-    if (scoreP1 >= SCORE_MAX) {
+    if (scoreP1 >= SCORE_MAX_SOLO) {
       end_timeP1 = millis();
       game_started = false;
       game_timeP1 = (end_timeP1 - start_time) / 1000;
@@ -270,15 +273,15 @@ void taupitaupe_vs() {
     }
 
     // End of game - end timers ASAP
-    if (scoreP1 >= SCORE_MAX) {
+    if (scoreP1 >= SCORE_MAX_VS) {
       game_started = false;
       P1wins = true;
       end_timeP1 = millis();
-      if (scoreP2 >= SCORE_MAX) { // Case of tie
+      if (scoreP2 >= SCORE_MAX_VS) { // Case of tie
         P2wins = true;
         end_timeP2 = end_timeP1;
       }
-    } else if (scoreP2 >= SCORE_MAX) {
+    } else if (scoreP2 >= SCORE_MAX_VS) {
       game_started = false;
       P2wins = true;
       end_timeP2 = millis();
