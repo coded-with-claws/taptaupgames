@@ -21,6 +21,7 @@ const uint8_t in_button_pins[BUTTON_PINS_NB] = {
 extern bool btn_states[BUTTON_NB];
 
 void upd_btn_states(void);
+bool is_bad_btn_pressed(uint8_t);
 void test_buttons(void);
 
 #endif

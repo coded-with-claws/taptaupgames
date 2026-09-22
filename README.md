@@ -13,6 +13,7 @@ Button-based system for games like versus-whack-a-mole.
 - In some cases of very active loop (`test_buttons()`), a delay of 1ms must be applied after lighting on a LED (of a button), otherwise it's "half lit" (low intensity).
 - A delay (at least 150ms) must be applied to let the button pressed button to be unpressed, otherwise this button will be counted as pressed during next loop iteration of the game.
 - To avoid conflicts between pins of LEDs when lighting on multiple LEDs, the LEDs are lit on/off alternately and very quickly (delay of 5ms).
+- In versus mode, the anti-cheat is partially implemented (only button pins D1, D2, D3 and D4 are used for anti-cheat, because D5, D6 and D7 are shared between both players).
 
 ## Authors
 - coded-with-claws

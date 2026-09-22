@@ -261,14 +261,18 @@ void taupitaupe_vs() {
     }
 
     if (btnP1_pressed) {
-      scoreP1++;
+      if (!is_bad_btn_pressed(btnP1_nbr)) {
+        scoreP1++;
+      }
       lightoff_led(btnP1_nbr);
       btnP1_pressed = false;
       pop_new_btnP1 = true;
     }
 
     if (btnP2_pressed) {
-      scoreP2++;
+      if (!is_bad_btn_pressed(btnP2_nbr)) {
+        scoreP2++;
+      }
       lightoff_led(btnP2_nbr);
       btnP2_pressed = false;
       pop_new_btnP2 = true;
