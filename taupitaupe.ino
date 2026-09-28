@@ -188,6 +188,9 @@ void taupitaupe_solo() {
         game_timeP1_wr = game_timeP1;
         EEPROM.put(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
         disp_win_anim_solo_wr();
+        if (game_timeP1 < game_timeP1_recofday) {
+          game_timeP1_recofday = game_timeP1; // also counts as record of the day but without animation
+        }
       } else if (game_timeP1 < game_timeP1_recofday) { // record of the day
         game_timeP1_recofday = game_timeP1;
         disp_win_anim_solo_recofday();
