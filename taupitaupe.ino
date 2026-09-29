@@ -17,6 +17,11 @@
 
 #define TAUPITAUPE_WR_EEADDR 0 // EEPROM address for world record highscore (unsigned long)
 
+#define MAX_VAL_GAMETIME 4294967295 // max value of unsigned long
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+
 // state true means light is on, false means light is off
 //bool led_state[LED_NB] = { false };
 
@@ -31,18 +36,23 @@
   unsigned long last_pressed_timeP1, last_pressed_timeP2;
   uint8_t i;
   // highscores
-  unsigned long game_timeP1_recofday; // max value of unsigned long
+  unsigned long game_timeP1_recofday;
   unsigned long game_timeP1_wr;
   
 void setup_taupitaupe() {
-  game_timeP1_recofday = 4294967295; // max value of unsigned long
+  game_timeP1 = MAX_VAL_GAMETIME;
+  game_timeP2 = MAX_VAL_GAMETIME;
+  game_timeP1_recofday = MAX_VAL_GAMETIME;
   
   // load world record highscore from eeprom
   EEPROM.get(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
   if (game_timeP1_wr == 0) {
     // no highscore available (case of EEPROM cleared)
-    game_timeP1_wr = 4294967295; // max value of unsigned long
+    game_timeP1_wr = MAX_VAL_GAMETIME;
   }
+
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+  display_scores_solo();
 }
 
 void loop_taupitaupe() {
@@ -58,7 +68,8 @@ void loop_taupitaupe() {
   } else {
     taupitaupe_vs();
   }
-
+  
+  display_scores_solo();
 }
 
 // Blink SOLO_START_BTN & VS_START_BTN, waiting for choice "Versus or Solo"
@@ -320,4 +331,38 @@ void taupitaupe_vs() {
     
   }
 
+}
+
+void display_scores_solo() {
+  display.clearDisplay();
+  display.setTextSize(2); // Draw 2X-scale text
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  
+  display.print(F("WR:"));
+  display.println(game_timeP1_wr);
+  
+  display.print(F("DR:"));
+  if(game_timeP1_recofday == MAX_VAL_GAMETIME) {
+    display.println(F("N/A"));
+  } else {
+    display.println(game_timeP1_recofday);
+  }
+
+  display.print(F("P1:"));
+  if(game_timeP1 == MAX_VAL_GAMETIME) {
+    display.println(F("N/A"));
+  } else {
+    display.println(game_timeP1);
+  }
+
+  display.print(F("P2:"));
+  if(game_timeP2 == MAX_VAL_GAMETIME) {
+    display.println(F("N/A"));
+  } else {
+    display.println(game_timeP2);
+  }
+
+  
+  display.display();
 }

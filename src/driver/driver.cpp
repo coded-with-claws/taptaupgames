@@ -25,6 +25,9 @@ void init_hardware() {
   // ISR routine to handle inputs
   init_isr_timer();
 
+  // Display init
+  //init_display();
+
   Serial.println(F("Hardware initialized"));
 }
 
