@@ -19,7 +19,8 @@
 
 #define MAX_VAL_GAMETIME 4294967295 // max value of unsigned long
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+//Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, A4, A5, OLED_RESET);
 
 
 // state true means light is on, false means light is off
