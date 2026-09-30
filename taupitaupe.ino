@@ -18,9 +18,9 @@
 #define TAUPITAUPE_WR_EEADDR 0 // EEPROM address for world record highscore (unsigned long)
 
 #define MAX_VAL_GAMETIME 4294967295 // max value of unsigned long
+#define VS_LOSER_TIME 999999
 
-//Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, A4, A5, OLED_RESET);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 
 // state true means light is on, false means light is off
@@ -44,7 +44,7 @@ void setup_taupitaupe() {
   game_timeP1 = MAX_VAL_GAMETIME;
   game_timeP2 = MAX_VAL_GAMETIME;
   game_timeP1_recofday = MAX_VAL_GAMETIME;
-  
+
   // load world record highscore from eeprom
   EEPROM.get(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
   if (game_timeP1_wr == 0) {
@@ -53,7 +53,9 @@ void setup_taupitaupe() {
   }
 
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
-  display_scores_solo();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display_scores();
 }
 
 void loop_taupitaupe() {
@@ -70,7 +72,7 @@ void loop_taupitaupe() {
     taupitaupe_vs();
   }
   
-  display_scores_solo();
+  display_scores();
 }
 
 // Blink SOLO_START_BTN & VS_START_BTN, waiting for choice "Versus or Solo"
@@ -193,20 +195,23 @@ void taupitaupe_solo() {
     if (scoreP1 >= SCORE_MAX_SOLO) {
       end_timeP1 = millis();
       game_started = false;
-      game_timeP1 = (end_timeP1 - start_time) / 1000;
+      game_timeP1 = end_timeP1 - start_time;
 
       // display animation: normal or record of the day or world record
       if (game_timeP1 < game_timeP1_wr) { // world record
         game_timeP1_wr = game_timeP1;
         EEPROM.put(TAUPITAUPE_WR_EEADDR, game_timeP1_wr);
-        disp_win_anim_solo_wr();
         if (game_timeP1 < game_timeP1_recofday) {
           game_timeP1_recofday = game_timeP1; // also counts as record of the day but without animation
         }
+        display_scores();
+        disp_win_anim_solo_wr();
       } else if (game_timeP1 < game_timeP1_recofday) { // record of the day
         game_timeP1_recofday = game_timeP1;
+        display_scores();
         disp_win_anim_solo_recofday();
       } else { // normal win
+        display_scores();
         disp_win_anim_solo_normal();
       }
     }
@@ -314,18 +319,21 @@ void taupitaupe_vs() {
       lightoff_all_leds();
       // Case of tie
       if (scoreP1 == scoreP2) {
-        game_timeP1 = (end_timeP1 - start_time) / 1000;
-        game_timeP2 = (end_timeP2 - start_time) / 1000;
+        game_timeP1 = end_timeP1 - start_time;
+        game_timeP2 = end_timeP2 - start_time;
       } else if (scoreP1 > scoreP2) {
       // P1 wins
-        game_timeP1 = (end_timeP1 - start_time) / 1000;
-        game_timeP2 = 999999;
+        game_timeP1 = end_timeP1 - start_time;
+        game_timeP2 = VS_LOSER_TIME;
       } else {
       // P2 wins
-        game_timeP1 = 999999;
-        game_timeP2 = (end_timeP2 - start_time) / 1000;
+        game_timeP1 = VS_LOSER_TIME;
+        game_timeP2 = end_timeP2 - start_time;
       }
 
+      // display scores
+      display_scores();
+      
       // display win
       disp_win_anim_vs(P1wins, P2wins);
     }
@@ -334,36 +342,50 @@ void taupitaupe_vs() {
 
 }
 
-void display_scores_solo() {
+void display_scores() {
   display.clearDisplay();
-  display.setTextSize(2); // Draw 2X-scale text
-  display.setTextColor(SSD1306_WHITE);
+
+  // SOLO scores
   display.setCursor(0, 0);
   
-  display.print(F("WR:"));
+  display.println(F("- SOLO -"));
+  display.print(F("WR: "));
   display.println(game_timeP1_wr);
   
-  display.print(F("DR:"));
-  if(game_timeP1_recofday == MAX_VAL_GAMETIME) {
+  display.print(F("DR: "));
+  if (game_timeP1_recofday == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
     display.println(game_timeP1_recofday);
   }
 
-  display.print(F("P1:"));
-  if(game_timeP1 == MAX_VAL_GAMETIME) {
+  display.print(F("CUR:"));
+  if (game_timeP1 == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
     display.println(game_timeP1);
   }
 
+  // VS scores
+  display.setCursor(64, 0);
+  display.println(F("- VERSUS -"));
+  display.setCursor(64, 8);
+  display.print(F("P1:"));
+
+  if (game_timeP1 == VS_LOSER_TIME || game_timeP1 == MAX_VAL_GAMETIME) {
+    display.println(F("N/A"));
+  } else {
+    display.println(game_timeP1);
+  }
+  
+  display.setCursor(64, 16);
   display.print(F("P2:"));
-  if(game_timeP2 == MAX_VAL_GAMETIME) {
+
+  if (game_timeP2 == VS_LOSER_TIME || game_timeP2 == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
     display.println(game_timeP2);
   }
-
   
   display.display();
 }
