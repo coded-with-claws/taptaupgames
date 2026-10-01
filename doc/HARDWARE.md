@@ -2,6 +2,7 @@
 - Arduino Nano (16MHz - important for ISR calculation)
 - 12 big arcade buttons with LEDs
   - usually they are provided for 12V so you have to change resistors for 5V (for the light to be bright)
+- oled display (0.91 inch, 128x32 pixels, SSD1306)
 
 # Electronic schematics
 - see `electronic_schematics/` for the buttons and the LEDs of the buttons
