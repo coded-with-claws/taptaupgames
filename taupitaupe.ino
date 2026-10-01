@@ -28,8 +28,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
   bool game_started;
   bool solo_mode;
-  unsigned long start_time, end_timeP1, end_timeP2, game_timeP1, game_timeP2, tmp_time;
-  unsigned long scoreP1, scoreP2;
+  unsigned long start_time, end_timeP1, end_timeP2, game_timeP1, game_timeP1_vs, game_timeP2_vs, tmp_time;
+  unsigned long scoreP1, scoreP1_vs, scoreP2_vs;
   unsigned long btnP1_nbr, btnP2_nbr;
   unsigned short btnP1_last, btnP2_last;
   bool btnP1_pressed, btnP2_pressed;
@@ -42,7 +42,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
   
 void setup_taupitaupe() {
   game_timeP1 = MAX_VAL_GAMETIME;
-  game_timeP2 = MAX_VAL_GAMETIME;
+  game_timeP1_vs = MAX_VAL_GAMETIME;
+  game_timeP2_vs = MAX_VAL_GAMETIME;
   game_timeP1_recofday = MAX_VAL_GAMETIME;
 
   // load world record highscore from eeprom
@@ -229,8 +230,8 @@ void taupitaupe_vs() {
   bool pop_new_btnP1 = true;
   bool pop_new_btnP2 = true;
   
-  scoreP1 = 0;
-  scoreP2 = 0;
+  scoreP1_vs = 0;
+  scoreP2_vs = 0;
   btnP1_last = 999;
   btnP2_last = 999;
   btnP1_pressed = false;
@@ -282,7 +283,7 @@ void taupitaupe_vs() {
 
     if (btnP1_pressed) {
       if (!is_bad_btn_pressed(btnP1_nbr)) {
-        scoreP1++;
+        scoreP1_vs++;
       }
       lightoff_led(btnP1_nbr);
       btnP1_pressed = false;
@@ -291,7 +292,7 @@ void taupitaupe_vs() {
 
     if (btnP2_pressed) {
       if (!is_bad_btn_pressed(btnP2_nbr)) {
-        scoreP2++;
+        scoreP2_vs++;
       }
       lightoff_led(btnP2_nbr);
       btnP2_pressed = false;
@@ -299,15 +300,15 @@ void taupitaupe_vs() {
     }
 
     // End of game - end timers ASAP
-    if (scoreP1 >= SCORE_MAX_VS) {
+    if (scoreP1_vs >= SCORE_MAX_VS) {
       game_started = false;
       P1wins = true;
       end_timeP1 = millis();
-      if (scoreP2 >= SCORE_MAX_VS) { // Case of tie
+      if (scoreP2_vs >= SCORE_MAX_VS) { // Case of tie
         P2wins = true;
         end_timeP2 = end_timeP1;
       }
-    } else if (scoreP2 >= SCORE_MAX_VS) {
+    } else if (scoreP2_vs >= SCORE_MAX_VS) {
       game_started = false;
       P2wins = true;
       end_timeP2 = millis();
@@ -318,17 +319,17 @@ void taupitaupe_vs() {
       // calculate game times
       lightoff_all_leds();
       // Case of tie
-      if (scoreP1 == scoreP2) {
-        game_timeP1 = end_timeP1 - start_time;
-        game_timeP2 = end_timeP2 - start_time;
-      } else if (scoreP1 > scoreP2) {
+      if (scoreP1_vs == scoreP2_vs) {
+        game_timeP1_vs = end_timeP1 - start_time;
+        game_timeP2_vs = end_timeP2 - start_time;
+      } else if (scoreP1_vs > scoreP2_vs) {
       // P1 wins
-        game_timeP1 = end_timeP1 - start_time;
-        game_timeP2 = VS_LOSER_TIME;
+        game_timeP1_vs = end_timeP1 - start_time;
+        game_timeP2_vs = VS_LOSER_TIME;
       } else {
       // P2 wins
-        game_timeP1 = VS_LOSER_TIME;
-        game_timeP2 = end_timeP2 - start_time;
+        game_timeP1_vs = VS_LOSER_TIME;
+        game_timeP2_vs = end_timeP2 - start_time;
       }
 
       // display scores
@@ -349,17 +350,17 @@ void display_scores() {
   display.setCursor(0, 0);
   
   display.println(F("- SOLO -"));
-  display.print(F("WR: "));
+  display.print(F("WR:"));
   display.println(game_timeP1_wr);
   
-  display.print(F("DR: "));
+  display.print(F("DR:"));
   if (game_timeP1_recofday == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
     display.println(game_timeP1_recofday);
   }
 
-  display.print(F("CUR:"));
+  display.print(F("UR:"));
   if (game_timeP1 == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
@@ -372,19 +373,19 @@ void display_scores() {
   display.setCursor(64, 8);
   display.print(F("P1:"));
 
-  if (game_timeP1 == VS_LOSER_TIME || game_timeP1 == MAX_VAL_GAMETIME) {
+  if (game_timeP1_vs == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
-    display.println(game_timeP1);
+    display.println(scoreP1_vs);
   }
   
   display.setCursor(64, 16);
   display.print(F("P2:"));
 
-  if (game_timeP2 == VS_LOSER_TIME || game_timeP2 == MAX_VAL_GAMETIME) {
+  if (game_timeP2_vs == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
   } else {
-    display.println(game_timeP2);
+    display.println(scoreP2_vs);
   }
   
   display.display();
