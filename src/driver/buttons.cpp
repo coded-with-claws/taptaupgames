@@ -31,27 +31,23 @@ void upd_btn_states() {
 bool is_bad_btn_pressed(uint8_t expected_btn) {
   uint8_t tmp_idx_btn;
 
-  for (tmp_idx_btn = 0; tmp_idx_btn < BUTTON_PINS_NB ; tmp_idx_btn++) {
-    pin_states[tmp_idx_btn] = digitalRead(in_button_pins[tmp_idx_btn]);
-  }
-
   if ((expected_btn == 0 || expected_btn == 1 || expected_btn == 2)
-       &&  pin_states[1]) {
+      &&  pin_states[1]) {
     return true;
   }
 
   if ((expected_btn == 3 || expected_btn == 4 || expected_btn == 5)
-       &&  pin_states[0]) {
+      &&  pin_states[0]) {
     return true;
   }
 
   if ((expected_btn == 6 || expected_btn == 7 || expected_btn == 8)
-       &&  pin_states[3]) {
+      &&  pin_states[3]) {
     return true;
   }
 
   if ((expected_btn == 9 || expected_btn == 10 || expected_btn == 11)
-       &&  pin_states[2]) {
+      &&  pin_states[2]) {
     return true;
   }
 
