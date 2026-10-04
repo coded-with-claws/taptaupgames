@@ -6,12 +6,12 @@
 #include <Arduino.h>
 
 /*
- * Buttons settings
- */
+   Buttons settings
+*/
 
 #define BUTTON_NB 12
 #define BUTTON_PINS_NB 7
-const uint8_t in_button_pins[BUTTON_PINS_NB] = { 
+const uint8_t in_button_pins[BUTTON_PINS_NB] = {
   A0, A1, A2, A3, 7, 8, 9
 };
 
@@ -25,4 +25,3 @@ bool is_bad_btn_pressed(uint8_t);
 void test_buttons(void);
 
 #endif
-

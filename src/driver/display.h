@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef _DISPLAY_h
-#define _DISPLAY_h                   
+#define _DISPLAY_h
 
 #include <SPI.h>
 #include <Wire.h>

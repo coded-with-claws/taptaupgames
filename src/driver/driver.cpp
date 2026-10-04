@@ -43,7 +43,7 @@ void init_isr_timer() {
   TCCR1B |= (1 << WGM12);
 
   // Set CS11 bit for prescaler 8
-  TCCR1B |= (1 << CS11); 
+  TCCR1B |= (1 << CS11);
 
   //initialize counter value to 0;
   TCNT1  = 0;
@@ -66,10 +66,10 @@ ISR(TIMER1_COMPA_vect)
 
   //DEBUG: read button pins states
   /*bool state;
-  for (uint8_t i = 0; i < BUTTON_PINS_NB ; i++) {
+    for (uint8_t i = 0; i < BUTTON_PINS_NB ; i++) {
     state = digitalRead(in_button_pins[i]);
     Serial.print(F("IN button pin state = ")); Serial.println(state);
-  }*/
+    }*/
 
   upd_btn_states();
   //Serial.print(F("Button 0 state = ")); Serial.println(btn_states[0]);
@@ -79,12 +79,11 @@ bool is_conflict(uint8_t btn1, uint8_t btn2) {
   uint8_t i_btn;
 
   for (i_btn = 0; i_btn < 36; i_btn++) {
-    if ( (btn1 == led_conflicts[i_btn*2] && btn2 == led_conflicts[i_btn*2+1])
-       || (btn1 == led_conflicts[i_btn*2+1] && btn2 == led_conflicts[i_btn*2])) {
-        return true;
+    if ( (btn1 == led_conflicts[i_btn * 2] && btn2 == led_conflicts[i_btn * 2 + 1])
+         || (btn1 == led_conflicts[i_btn * 2 + 1] && btn2 == led_conflicts[i_btn * 2])) {
+      return true;
     }
   }
   return false;
 
 }
-

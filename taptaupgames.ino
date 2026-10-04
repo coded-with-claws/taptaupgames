@@ -1,7 +1,7 @@
 /*
- * taptaupgames entry point
- * Push buttons at startup to run game / diag.
- */
+   taptaupgames entry point
+   Push buttons at startup to run game / diag.
+*/
 
 #include "src/driver/driver.h"
 
@@ -29,7 +29,7 @@ void loop() {
     while (true) {
       test_buttons_leds();
     }
-  } else if(btn_states[GAMECHOICE_BTN_DIAG_BUTTONS]) { // Diag - Buttons
+  } else if (btn_states[GAMECHOICE_BTN_DIAG_BUTTONS]) { // Diag - Buttons
     while (true) {
       test_buttons();
     }
@@ -62,21 +62,21 @@ void loop() {
     while (true) {
       delay(1000);
     }
-    
+
   } else { // Taupitaupe game
     setup_taupitaupe();
     while (true) {
       loop_taupitaupe();
     }
   }
-  
+
   // DEBUG - print button states
-  /*Serial.print(F("Btn states: ")); 
-  for (uint8_t i = 0; i < 12; i++) {
+  /*Serial.print(F("Btn states: "));
+    for (uint8_t i = 0; i < 12; i++) {
     Serial.print(btn_states[i]); Serial.print(F(" "));
-  }
-  Serial.println();
-  delay(100);*/
+    }
+    Serial.println();
+    delay(100);*/
   // END OF DEBUG
-  
+
 }

@@ -1,31 +1,31 @@
 #pragma once
 
 #ifndef _LEDS_h
-#define _LEDS_h                   
+#define _LEDS_h
 
 
 #include <Arduino.h>
 
 /*
- * LEDs (of buttons) settings
- */
+   LEDs (of buttons) settings
+*/
 //#define D0 0
 #define LED_PINS_NB 7
-const uint8_t led_pins[LED_PINS_NB] = { 
+const uint8_t led_pins[LED_PINS_NB] = {
   1, 0, 2, 3, 4, 5, 6
 };
 
 #define LED_NB 12
 /*
- * Pin name => Arduino pin
- * P1 => 1
- * P2 => 0
- * P3 => 2
- * P4 => 3
- * P5 => 4
- * P6 => 5
- * P7 => 6
- */
+   Pin name => Arduino pin
+   P1 => 1
+   P2 => 0
+   P3 => 2
+   P4 => 3
+   P5 => 4
+   P6 => 5
+   P7 => 6
+*/
 
 const uint8_t led_mapping[] = {
   1, 4,
@@ -42,7 +42,7 @@ const uint8_t led_mapping[] = {
   3, 6,
 };
 
-// list of conflicts between button numbers
+// list of conflicts between button numbers / led numbers
 // 36 * 2 elements
 const uint8_t led_conflicts[] = {
   0, 4,
@@ -93,7 +93,8 @@ void disp_win_anim_solo_wr(void);
 void disp_win_anim_vs(bool, bool);
 void test_buttons_leds(void);
 
-// label LEDs for Versus games: P11 = player1 LED1, P12 = player1 LED2, etc
+// Label LEDs for Versus games: P11 = player1 LED1, P12 = player1 LED2, etc.
+// Also used for buttons.
 enum LEDS_VS {
   P1_1 = 0,
   P1_2 = 1,
@@ -109,7 +110,8 @@ enum LEDS_VS {
   P2_6 = 11
 };
 
-// label LEDs for Solo games: P1 = LED1, P2 = LED2, etc
+// Label LEDs for Solo games: P1 = LED1, P2 = LED2, etc.
+// Also used for buttons.
 enum LEDS_SOLO {
   P1 = 11,
   P2 = 10,

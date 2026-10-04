@@ -1,8 +1,8 @@
 #include "leds.h"
 
 /*
- * LED (on button) management
- */
+   LED (on button) management
+*/
 
 // Receive LED number 0..11, return index for led_mapping array
 uint8_t calc_led_mapping(uint8_t led_nb) {
@@ -49,8 +49,8 @@ void lightoff_all_leds() {
 }
 
 /*
- * Win animation functions
- */
+   Win animation functions
+*/
 
 // Win animation - SOLO - Normal (just end of game)
 void disp_win_anim_solo_normal() {
@@ -134,8 +134,8 @@ void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
 }
 
 /*
- * Test functions
- */
+   Test functions
+*/
 void test_buttons_leds() {
   uint8_t i;
 
@@ -148,15 +148,15 @@ void test_buttons_leds() {
     digitalWrite(led_pins[i], LOW);
   }
   delay(1000);
-  
+
   // Light all LEDs one by one
   /*for (i = 0; i < LED_NB ; i++) {
     lighton_led(i);
     delay(200);
     lightoff_led(i);
     delay(200);
-  }
-  delay(1000);*/
+    }
+    delay(1000);*/
 
   // Solo mode
   // Light all LEDs of player 1
@@ -185,7 +185,7 @@ void test_buttons_leds() {
   lighton_led(P12); delay(200);
   lightoff_led(P12); delay(200);
   delay(1000);
-  
+
   // Versus mode
   // Light all LEDs of player 1
   lighton_led(P1_1); delay(200);

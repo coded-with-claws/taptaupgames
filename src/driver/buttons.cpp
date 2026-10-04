@@ -1,5 +1,5 @@
 #include "buttons.h"
-#include "leds.h"
+#include "leds.h" // need to call leds functions
 
 static bool btn_states[BUTTON_NB] = { false };
 

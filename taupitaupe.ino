@@ -1,6 +1,6 @@
 /*
- * TAUPITAUPE - game for taptaupgames
- */
+   TAUPITAUPE - game for taptaupgames
+*/
 
 // SETTINGS
 #define SCORE_MAX_SOLO 20
@@ -26,20 +26,20 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // state true means light is on, false means light is off
 //bool led_state[LED_NB] = { false };
 
-  bool game_started;
-  bool solo_mode;
-  unsigned long start_time, end_timeP1, end_timeP2, game_timeP1, game_timeP1_vs, game_timeP2_vs, tmp_time;
-  unsigned long scoreP1, scoreP1_vs, scoreP2_vs;
-  unsigned long btnP1_nbr, btnP2_nbr;
-  unsigned short btnP1_last, btnP2_last;
-  bool btnP1_pressed, btnP2_pressed;
-  bool wrong_btnP1_pressed;
-  unsigned long last_pressed_timeP1, last_pressed_timeP2;
-  uint8_t i;
-  // highscores
-  unsigned long game_timeP1_recofday;
-  unsigned long game_timeP1_wr;
-  
+bool game_started;
+bool solo_mode;
+unsigned long start_time, end_timeP1, end_timeP2, game_timeP1, game_timeP1_vs, game_timeP2_vs, tmp_time;
+unsigned long scoreP1, scoreP1_vs, scoreP2_vs;
+unsigned long btnP1_nbr, btnP2_nbr;
+unsigned short btnP1_last, btnP2_last;
+bool btnP1_pressed, btnP2_pressed;
+bool wrong_btnP1_pressed;
+unsigned long last_pressed_timeP1, last_pressed_timeP2;
+uint8_t i;
+// highscores
+unsigned long game_timeP1_recofday;
+unsigned long game_timeP1_wr;
+
 void setup_taupitaupe() {
   game_timeP1 = MAX_VAL_GAMETIME;
   game_timeP1_vs = MAX_VAL_GAMETIME;
@@ -72,7 +72,7 @@ void loop_taupitaupe() {
   } else {
     taupitaupe_vs();
   }
-  
+
   display_scores();
 }
 
@@ -84,22 +84,22 @@ void choose_taupitaupe_solo_vs() {
   bool vs_btn_already_pressed = false;
   unsigned long last_press_solo_btn = millis();
   unsigned long last_press_vs_btn = millis();
-  
+
   game_started = false;
   solo_mode = false;
-  
-  while(!game_started) {
+
+  while (!game_started) {
 
     lighton_led(SOLO_START_BTN);
     lighton_led(VS_START_BTN);
     tmp_time = millis();
-    while(!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
+    while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
       delay(20); // wait for next ISR call
     }
     lightoff_led(SOLO_START_BTN);
     lightoff_led(VS_START_BTN);
     tmp_time = millis();
-    while(!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
+    while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
       delay(20); // wait for next ISR call
     }
 
@@ -109,7 +109,7 @@ void choose_taupitaupe_solo_vs() {
     } else if (!btn_states[SOLO_START_BTN]) {
       solo_btn_already_pressed = false;
     }
-      
+
     if (btn_states[VS_START_BTN] && !vs_btn_already_pressed) {
       vs_btn_already_pressed = true;
       last_press_vs_btn = millis();
@@ -117,49 +117,49 @@ void choose_taupitaupe_solo_vs() {
       vs_btn_already_pressed = false;
     }
 
-    if(btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
-      
+    if (btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
+
       if (solo_btn_already_pressed && !vs_btn_already_pressed && millis() - last_press_solo_btn >= START_PRESS_DURATION) {
-          // only solo button was pressed enough time => solo mode starts
-          game_started = true;
-          solo_mode = true;
-          lightoff_led(VS_START_BTN);
-          for (i = 0; i < 10; i++) {
-            lightoff_led(SOLO_START_BTN); delay(50);
-            lighton_led(SOLO_START_BTN); delay(50);
-          }
-          lightoff_led(SOLO_START_BTN);
-          return;
+        // only solo button was pressed enough time => solo mode starts
+        game_started = true;
+        solo_mode = true;
+        lightoff_led(VS_START_BTN);
+        for (i = 0; i < 10; i++) {
+          lightoff_led(SOLO_START_BTN); delay(50);
+          lighton_led(SOLO_START_BTN); delay(50);
+        }
+        lightoff_led(SOLO_START_BTN);
+        return;
       }
       if (solo_btn_already_pressed && vs_btn_already_pressed
           && (millis() - last_press_solo_btn >= START_PRESS_DURATION || millis() - last_press_vs_btn >= START_PRESS_DURATION)) {
-          // both buttons were pressed enough time => vs mode starts
-          game_started = true;
-          for (i = 0; i < 10; i++) {
-            lightoff_led(SOLO_START_BTN); lighton_led(VS_START_BTN); delay(50);
-            lightoff_led(VS_START_BTN); lighton_led(SOLO_START_BTN); delay(50);
-          }
-          lightoff_led(SOLO_START_BTN);
-          return;
+        // both buttons were pressed enough time => vs mode starts
+        game_started = true;
+        for (i = 0; i < 10; i++) {
+          lightoff_led(SOLO_START_BTN); lighton_led(VS_START_BTN); delay(50);
+          lightoff_led(VS_START_BTN); lighton_led(SOLO_START_BTN); delay(50);
+        }
+        lightoff_led(SOLO_START_BTN);
+        return;
       }
-      
+
     }
   }
 }
 
 // SOLO mode
 void taupitaupe_solo() {
-  
+
   scoreP1 = 0;
   btnP1_last = 999;
   btnP1_pressed = false;
   wrong_btnP1_pressed = false;
-  
+
   delay(1000);
   start_time = millis();
-  
-  while(game_started) {
-    
+
+  while (game_started) {
+
     // choose new button
     do {
       btnP1_nbr = random(0, BUTTON_NB);
@@ -168,7 +168,7 @@ void taupitaupe_solo() {
 
     // light on the button and wait for the press
     lighton_led(btnP1_nbr);
-    while(!btnP1_pressed) {
+    while (!btnP1_pressed) {
       for (i = 0; i < BUTTON_NB; i++) {
         if (btn_states[i]) {
           if (i == btnP1_nbr) {
@@ -189,7 +189,7 @@ void taupitaupe_solo() {
       btnP1_pressed = false;
       wrong_btnP1_pressed = false;
     }
-    
+
     lightoff_led(btnP1_nbr);
 
     // End of game
@@ -229,7 +229,7 @@ void taupitaupe_vs() {
   bool P2wins = false;
   bool pop_new_btnP1 = true;
   bool pop_new_btnP2 = true;
-  
+
   scoreP1_vs = 0;
   scoreP2_vs = 0;
   btnP1_last = 999;
@@ -238,12 +238,12 @@ void taupitaupe_vs() {
   btnP2_pressed = false;
   last_pressed_timeP1 = 0;
   last_pressed_timeP2 = 0;
-  
+
   delay(1000);
   start_time = millis();
 
-  while(game_started) {
-    
+  while (game_started) {
+
     // choose new button for P1
     if (pop_new_btnP1) {
       do {
@@ -263,7 +263,7 @@ void taupitaupe_vs() {
     }
 
     // light on the buttons and wait for the presses
-    while(!btnP1_pressed && !btnP2_pressed) {
+    while (!btnP1_pressed && !btnP2_pressed) {
       lighton_led(btnP1_nbr); delay(5); lightoff_led(btnP1_nbr); // light the two LEDs alternately to avoid conflicts
       lighton_led(btnP2_nbr); delay(5); lightoff_led(btnP2_nbr);
       // scan P1 buttons
@@ -271,13 +271,13 @@ void taupitaupe_vs() {
         btnP1_pressed = true;
         last_pressed_timeP1 = millis();
       }
-      
+
       // scan P2 buttons
       if (millis() - last_pressed_timeP2 >= UNPRESS_DELAY && btn_states[btnP2_nbr]) {
         btnP2_pressed = true;
         last_pressed_timeP2 = millis();
       }
-      
+
       //delay(1); // for ISR to keep working - not needed because of the delays between light on/off
     }
 
@@ -323,22 +323,22 @@ void taupitaupe_vs() {
         game_timeP1_vs = end_timeP1 - start_time;
         game_timeP2_vs = end_timeP2 - start_time;
       } else if (scoreP1_vs > scoreP2_vs) {
-      // P1 wins
+        // P1 wins
         game_timeP1_vs = end_timeP1 - start_time;
         game_timeP2_vs = VS_LOSER_TIME;
       } else {
-      // P2 wins
+        // P2 wins
         game_timeP1_vs = VS_LOSER_TIME;
         game_timeP2_vs = end_timeP2 - start_time;
       }
 
       // display scores
       display_scores();
-      
+
       // display win
       disp_win_anim_vs(P1wins, P2wins);
     }
-    
+
   }
 
 }
@@ -348,11 +348,11 @@ void display_scores() {
 
   // SOLO scores
   display.setCursor(0, 0);
-  
+
   display.println(F("- SOLO -"));
   display.print(F("WR:"));
   display.println(game_timeP1_wr);
-  
+
   display.print(F("DR:"));
   if (game_timeP1_recofday == MAX_VAL_GAMETIME) {
     display.println(F("N/A"));
@@ -378,7 +378,7 @@ void display_scores() {
   } else {
     display.println(scoreP1_vs);
   }
-  
+
   display.setCursor(64, 16);
   display.print(F("P2:"));
 
@@ -387,6 +387,6 @@ void display_scores() {
   } else {
     display.println(scoreP2_vs);
   }
-  
+
   display.display();
 }
