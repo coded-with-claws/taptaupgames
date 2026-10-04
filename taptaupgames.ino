@@ -14,9 +14,9 @@ void setup() {
   // Serial init
   // DISABLED SERIAL: interfers with pins RX/DX which are used for buttons
   //Serial.begin(9600);
-  Serial.print(F("*** TAPTAUPEGAMES STARTING ***"));
+  //Serial.print(F("*** TAPTAUPEGAMES STARTING ***"));
   init_hardware();
-  Serial.println(F("*** TAPTAUPEGAMES INITIALIZED ***"));
+  //Serial.println(F("*** TAPTAUPEGAMES INITIALIZED ***"));
 }
 
 void loop() {

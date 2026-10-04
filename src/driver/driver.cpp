@@ -19,7 +19,7 @@ void init_hardware() {
   // Buttons init
   for (i = 0; i < BUTTON_PINS_NB ; i++) {
     pinMode(in_button_pins[i], INPUT);
-    Serial.print(F("IN button pin ")); Serial.print(i); Serial.println(F(" initialized"));
+    //Serial.print(F("IN button pin ")); Serial.print(i); Serial.println(F(" initialized"));
   }
 
   // ISR routine to handle inputs
@@ -28,13 +28,13 @@ void init_hardware() {
   // Display init
   //init_display();
 
-  Serial.println(F("Hardware initialized"));
+  // Serial.println(F("Hardware initialized"));
 }
 
 // 50Hz ISR routine (called every 20ms) to handle inputs
 // Calculations are done for a 16 MHz CPU
 void init_isr_timer() {
-  
+
   // INITIALIZE TIMER INTERRUPTS
   cli(); // disable global interrupts
 
