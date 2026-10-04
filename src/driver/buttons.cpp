@@ -59,19 +59,13 @@ bool is_bad_btn_pressed(uint8_t expected_btn) {
 }
 
 void test_buttons() {
-  // Allow 20 seconds of buttons test
-  unsigned long start_time = millis();
-  while(millis() - start_time < 20 * 1000) {
 
-    for (uint8_t i = 0; i < BUTTON_NB; i++) {
-      if (btn_states[i]) {
-        lighton_led(i);
-	delay(1); // important, otherwise the LED is "half lit" (low intensity)
-      } else {
-        lightoff_led(i);
-      }
+  for (uint8_t i = 0; i < BUTTON_NB; i++) {
+    if (btn_states[i]) {
+      lighton_led(i);
+      delay(1); // important, otherwise the LED is "half lit" (low intensity)
+    } else {
+      lightoff_led(i);
     }
-
   }
 }
-
