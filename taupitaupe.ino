@@ -3,10 +3,10 @@
 */
 
 // SETTINGS
-#define SCORE_MAX_SOLO 20
-#define SCORE_MAX_VS 30
-//#define SCORE_MAX_SOLO 5 // DEBUG
-//#define SCORE_MAX_VS 5 // DEBUG
+//#define SCORE_MAX_SOLO 20
+//#define SCORE_MAX_VS 30
+#define SCORE_MAX_SOLO 5 // DEBUG
+#define SCORE_MAX_VS 5 // DEBUG
 
 #define UNPRESS_DELAY 300
 #define START_BLINK_DURATION 500
@@ -219,7 +219,6 @@ void taupitaupe_solo() {
 
     delay(UNPRESS_DELAY); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
   }
-
 }
 
 // VERSUS mode

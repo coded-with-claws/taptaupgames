@@ -1,5 +1,8 @@
 #include "leds.h"
 
+// Audio
+#include "melodies.h"
+
 /*
    LED (on button) management
 */
@@ -59,6 +62,7 @@ void disp_win_anim_solo_normal() {
     lightoff_all_leds();
     delay(300);
     lighton_all_leds();
+    play_melody(snd_win_solo_normal, (sizeof snd_win_solo_normal / sizeof * snd_win_solo_normal) / 2, 80); //Audio
     delay(300);
   }
   lightoff_all_leds();
@@ -70,7 +74,9 @@ void disp_win_anim_solo_recofday() {
   for (i = 0; i < 9; i++) {
     for (j = 0; j < 4 ; j++) {
       // light LEDs one at a time to avoid conflicts
-      lighton_led(anim_win_solo_recofday[j]); delay(100);
+      lighton_led(anim_win_solo_recofday[j]);
+      play_melody(snd_solo, (sizeof snd_solo / sizeof * snd_solo) / 2, 80); //Audio
+      delay(100);
       lightoff_led(anim_win_solo_recofday[j]); delay(100);
     }
     if (i % 3 == 2) {
@@ -78,6 +84,7 @@ void disp_win_anim_solo_recofday() {
         lightoff_all_leds();
         delay(100);
         lighton_all_leds();
+        play_melody(snd_solo_recofday, (sizeof snd_solo_recofday / sizeof * snd_solo_recofday) / 2, 80); //Audio
         delay(100);
       }
       lightoff_all_leds();
@@ -91,7 +98,9 @@ void disp_win_anim_solo_wr() {
   for (i = 0; i < 9 ; i++) {
     for (j = 0; j < 12 ; j++) {
       // light LEDs one at a time to avoid conflicts
-      lighton_led(anim_win_solo_wr[j]); delay(100);
+      lighton_led(anim_win_solo_wr[j]);
+      play_melody(snd_solo, (sizeof snd_solo / sizeof * snd_solo) / 2, 80); //Audio
+      delay(100);
       lightoff_led(anim_win_solo_wr[j]); delay(100);
     }
     if (i % 3 == 2) {
@@ -99,6 +108,7 @@ void disp_win_anim_solo_wr() {
         lightoff_all_leds();
         delay(100);
         lighton_all_leds();
+        play_melody(snd_win_solo_wr, (sizeof snd_win_solo_wr / sizeof * snd_win_solo_wr) / 2, 80); //Audio
         delay(100);
       }
       lightoff_all_leds();
@@ -115,6 +125,7 @@ void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
       // light LEDs one at a time to avoid conflicts
       if (is_p1_win && (i % 2 == 0)) {
         lighton_led(anim_win_vs[i]);
+        play_melody(snd_win_vs, (sizeof snd_win_vs / sizeof * snd_win_vs) / 2, 80); //Audio
         delay(150);
         if (!is_p2_win) {
           delay(50);
@@ -123,6 +134,7 @@ void disp_win_anim_vs(bool is_p1_win, bool is_p2_win) {
       }
       if (is_p2_win && (i % 2 == 1)) {
         lighton_led(anim_win_vs[i]);
+        play_melody(snd_win_vs, (sizeof snd_win_vs / sizeof * snd_win_vs) / 2, 80); //Audio
         delay(150);
         if (!is_p1_win) {
           delay(50);

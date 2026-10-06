@@ -2,7 +2,7 @@
    taptaupgames entry point
    Push buttons at startup to run game / diag.
 */
-
+const byte brocheBuzzer = 11;
 #include "src/driver/driver.h"
 
 #define GAMECHOICE_BTN_DIAG_LEDS P1_1
@@ -17,6 +17,8 @@ void setup() {
   //Serial.print(F("*** TAPTAUPEGAMES STARTING ***"));
   init_hardware();
   //Serial.println(F("*** TAPTAUPEGAMES INITIALIZED ***"));
+  pinMode(brocheBuzzer, OUTPUT); //Audio
+  tone(brocheBuzzer, 523, 50);
 }
 
 void loop() {
