@@ -17,6 +17,9 @@ Button-based system for games like versus-whack-a-mole.
 - To avoid conflicts between pins of LEDs when lighting on multiple LEDs, the LEDs are lit on/off alternately and very quickly (delay of 5ms).
 - In versus mode, the anti-cheat is partially implemented (only button pins D1, D2, D3 and D4 are used for anti-cheat, because D5, D6 and D7 are shared between both players).
 
+## Simulation
+Open `taptaupgames.sim1` with SimulIDE.
+
 ## Authors
 - coded-with-claws
 - Richard
