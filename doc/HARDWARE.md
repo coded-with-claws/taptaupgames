@@ -9,7 +9,43 @@
 - the names D1..D7 on the schematics are "logical names" (not related to Arduino's digital pins)
 
 # Wiring with Arduino
-- Arduino A0..3 D7..9 <=> "logical" D1..D7 wires for the 12 buttons
-- Arduino D1 D0 D2..D6 <=> "logical" D1..D7 wires for the 12 LEDs (LEDs of buttons)
-- Pin D12 is unconnected, but used for random seed init
+
+Below are pin mappings of the Arduino (noted `Ax` for analog pin and `x` for digital pin).
+D1 to D7 wires refer to the "logical" wires as described in the electronic schematics.
+
+Note: Pin D12 is unconnected, but used for random seed init
+
+## Leds pins
+
+Legend:
+Dx wire -> Arduino pin.
+
+ D1 -> 1
+ D2 -> 0
+ D3 -> 2
+ D4 -> 3
+ D5 -> 4
+ D6 -> 5
+ D7 -> 6
+
+## Button pins
+
+Legend:
+Dx wire -> Arduino pin.
+
+ D1 -> A0
+ D2 -> A1
+ D3 -> A2
+ D4 -> A3
+ D5 -> 7
+ D6 -> 8
+ D7 -> 9
+
+# Display pins
+
+Legend:
+Display wire -> Arduino pin.
+
+ SDA -> A4
+ SCL -> A5
 
