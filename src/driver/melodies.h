@@ -1,7 +1,7 @@
 
 const byte brocheBuzzer = 11;
 
-void jouerMelodie(int * laMelodie, int nbNotes, int metro) {
+void play_melody(int * laMelodie, int nbNotes, int metro) {
   int wholenote = (60000L * 4) / metro;  // this calculates the duration of a whole note in ms (60s/tempo)*4 beats
   int divider = 0, noteDuration = 0;
 
