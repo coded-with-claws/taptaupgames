@@ -3,7 +3,7 @@
 */
 
 // SETTINGS
-#define SCORE_MAX_SOLO 20
+#define SCORE_MAX_SOLO 30
 #define SCORE_MAX_VS 30
 //#define SCORE_MAX_SOLO 5 // DEBUG
 //#define SCORE_MAX_VS 5 // DEBUG
@@ -172,11 +172,12 @@ void taupitaupe_solo() {
     while (!btnP1_pressed) {
       for (i = 0; i < BUTTON_NB; i++) {
         if (btn_states[i]) {
-          if (i == btnP1_nbr) {
+          // first test for wrong button, because good button will reset last_pressed_timeP1
+          if (i != btnP1_nbr && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
+            wrong_btnP1_pressed = true;
+          } else if (i == btnP1_nbr) {
             btnP1_pressed = true;
             last_pressed_timeP1 = millis();
-          } else if (millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
-            wrong_btnP1_pressed = true;
           }
         }
       }
@@ -351,8 +352,13 @@ void display_scores() {
   display.setCursor(0, 0);
 
   display.println(F("- SOLO -"));
+  
   display.print(F("WR:"));
-  display.println(game_timeP1_wr);
+  if (game_timeP1_wr == MAX_VAL_GAMETIME) {
+    display.println(F("N/A"));
+  } else {
+    display.println(game_timeP1_wr);
+  }
 
   display.print(F("DR:"));
   if (game_timeP1_recofday == MAX_VAL_GAMETIME) {

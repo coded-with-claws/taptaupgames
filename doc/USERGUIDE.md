@@ -19,8 +19,8 @@ When the game is powered up, it starts depending on button already pressed:
 Two buttons are flashing : one on P1's side, one on P2's side.
 Press only P1's button during 2 seconds for a solo game.
 Press both P1's and P2's buttons during 2 seconds for a versus game.
-In solo mode, you play whack-a-mole with all the buttons. You have to hit a score of 20 in the shortest time possible.
-In versus mode, each player plays whack-a-mole on their side. The first player to hit a score of 20 wins.
+In solo mode, you play whack-a-mole with all the buttons. You have to hit a score of 30 in the shortest time possible.
+In versus mode, each player plays whack-a-mole on their side. The first player to hit a score of 30 wins.
 After a game, the choice is up again between solo and versus.
 
 #### Solo mode highscore
