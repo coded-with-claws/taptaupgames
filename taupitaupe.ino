@@ -150,6 +150,8 @@ void choose_taupitaupe_solo_vs() {
 // SOLO mode
 void taupitaupe_solo() {
 
+  unsigned short btnP1_nbr_tmp;
+  
   scoreP1 = 0;
   btnP1_last = 999;
   btnP1_pressed = false;
@@ -162,18 +164,21 @@ void taupitaupe_solo() {
   while (game_started) {
 
     // choose new button
-    do {
-      btnP1_nbr = random(0, BUTTON_NB);
-    } while (btnP1_nbr == btnP1_last);
     btnP1_last = btnP1_nbr;
+    do {
+      btnP1_nbr_tmp = random(0, BUTTON_NB);
+    } while (btnP1_nbr_tmp == btnP1_nbr);
+    btnP1_nbr = btnP1_nbr_tmp;
 
     // light on the button and wait for the press
     lighton_led(btnP1_nbr);
     while (!btnP1_pressed) {
       for (i = 0; i < BUTTON_NB; i++) {
         if (btn_states[i]) {
-          // first test for wrong button, because good button will reset last_pressed_timeP1
-          if (i != btnP1_nbr && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
+          // first, test for wrong button, because good button will reset last_pressed_timeP1
+          if (i != btnP1_nbr && i != btnP1_last) {
+            wrong_btnP1_pressed = true;
+          } else if (i == btnP1_last && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
             wrong_btnP1_pressed = true;
           } else if (i == btnP1_nbr) {
             btnP1_pressed = true;
