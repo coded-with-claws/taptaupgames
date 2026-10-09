@@ -3,12 +3,12 @@
 */
 
 // SETTINGS
-#define SCORE_MAX_SOLO 20
+#define SCORE_MAX_SOLO 30
 #define SCORE_MAX_VS 30
 //#define SCORE_MAX_SOLO 5 // DEBUG
 //#define SCORE_MAX_VS 5 // DEBUG
 
-#define UNPRESS_DELAY 300
+#define UNPRESS_DELAY 300 // must be >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
 #define START_BLINK_DURATION 500
 #define START_PRESS_DURATION 1000
 
@@ -94,13 +94,13 @@ void choose_taupitaupe_solo_vs() {
     lighton_led(VS_START_BTN);
     tmp_time = millis();
     while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
-      delay(20); // wait for next ISR call
+      delay(5); // wait for next ISR call
     }
     lightoff_led(SOLO_START_BTN);
     lightoff_led(VS_START_BTN);
     tmp_time = millis();
     while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
-      delay(20); // wait for next ISR call
+      delay(5); // wait for next ISR call
     }
 
     if (btn_states[SOLO_START_BTN] && !solo_btn_already_pressed) {
@@ -154,6 +154,7 @@ void taupitaupe_solo() {
   btnP1_last = 999;
   btnP1_pressed = false;
   wrong_btnP1_pressed = false;
+  last_pressed_timeP1 = 0;
 
   delay(1000);
   start_time = millis();
@@ -171,10 +172,12 @@ void taupitaupe_solo() {
     while (!btnP1_pressed) {
       for (i = 0; i < BUTTON_NB; i++) {
         if (btn_states[i]) {
-          if (i == btnP1_nbr) {
-            btnP1_pressed = true;
-          } else {
+          // first test for wrong button, because good button will reset last_pressed_timeP1
+          if (i != btnP1_nbr && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
             wrong_btnP1_pressed = true;
+          } else if (i == btnP1_nbr) {
+            btnP1_pressed = true;
+            last_pressed_timeP1 = millis();
           }
         }
       }
@@ -217,7 +220,6 @@ void taupitaupe_solo() {
       }
     }
 
-    delay(UNPRESS_DELAY); // important >= 150ms (time for unpress, otherwise next loop iteration the button already pressed will be counted as wrong button)
   }
 
 }
@@ -350,8 +352,13 @@ void display_scores() {
   display.setCursor(0, 0);
 
   display.println(F("- SOLO -"));
+  
   display.print(F("WR:"));
-  display.println(game_timeP1_wr);
+  if (game_timeP1_wr == MAX_VAL_GAMETIME) {
+    display.println(F("N/A"));
+  } else {
+    display.println(game_timeP1_wr);
+  }
 
   display.print(F("DR:"));
   if (game_timeP1_recofday == MAX_VAL_GAMETIME) {

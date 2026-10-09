@@ -31,7 +31,7 @@ void init_hardware() {
   // Serial.println(F("Hardware initialized"));
 }
 
-// 50Hz ISR routine (called every 20ms) to handle inputs
+// 200Hz ISR routine (called every 5ms) to handle inputs
 // Calculations are done for a 16 MHz CPU
 void init_isr_timer() {
 
@@ -48,8 +48,9 @@ void init_isr_timer() {
   //initialize counter value to 0;
   TCNT1  = 0;
 
-  // set timer count for 50Hz increments (every 20ms)
-  OCR1A = 39999;// = (16*10^6) / (50*8) - 1
+  // set timer count for 200Hz increments (every 5ms)
+  OCR1A = 9999;// = (16*10^6) / (200*8) - 1
+  //OCR1A = 39999;// = (16*10^6) / (50*8) - 1
   //OCR1A = 19999;// = (16*10^6) / (100*8) - 1
   //OCR1A = 199999;// = (16*10^6) / (10*8) - 1
 
