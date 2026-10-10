@@ -10,7 +10,7 @@
 #define GAMECHOICE_BTN_EEPROMCLR1 P1_3
 #define GAMECHOICE_BTN_EEPROMCLR2 P2_3
 
-#define EEPROM_USED_SIZE 4 # 4 bytes for taupitaupe world record
+#define EEPROM_USED_SIZE 4 // 4 bytes for taupitaupe world record
 
 void setup() {
   // Serial init
