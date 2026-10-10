@@ -16,12 +16,15 @@ When the game is powered up, it starts depending on button already pressed:
 - buttons: lights buttons whenever they are pressed (can be used to show conflicts).
 
 ### Taupitaupe
-Two buttons are flashing : one on P1's side, one on P2's side.
+Three buttons are flashing: one symmetrically on P1's and P2's sides, and another button on P1's side.
+For the symmetrical buttons: 
 Press only P1's button during 2 seconds for a solo game.
 Press both P1's and P2's buttons during 2 seconds for a versus game.
-In solo mode, you play whack-a-mole with all the buttons. You have to hit a score of 30 in the shortest time possible.
-In versus mode, each player plays whack-a-mole on their side. The first player to hit a score of 30 wins.
-After a game, the choice is up again between solo and versus.
+For the last button: press it during 2 secondsA for a classic solo game.
+- In solo mode, you play whack-a-mole with all the buttons. You have to hit a score of 30 in the shortest time possible. If you hit a wrong button, you won't get the point when you hit the next good button.
+- In versus mode, each player plays whack-a-mole on their side. The first player to hit a score of 30 wins. If you hit a wrong button at the same time as you hit the good button (with some restrictions due to the hardware design), you don't get the point.
+- In classic solo mode, the moles appear and disappear with random delays. If you hit a wrong button at the same time as you hit the good button, you don't get the point.
+After a game, the choice is up again between solo, versus and classic solo.
 
 #### Solo mode highscore
 There are two highscores:

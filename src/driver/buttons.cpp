@@ -1,7 +1,8 @@
 #include "buttons.h"
 #include "leds.h" // need to call leds functions
 
-static bool btn_states[BUTTON_NB] = { false };
+//static bool btn_states[BUTTON_NB] = { false };
+volatile bool btn_states[BUTTON_NB] = { false };
 
 bool pin_states[BUTTON_PINS_NB];
 uint8_t idx_btn;
