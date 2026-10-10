@@ -10,6 +10,8 @@
 #define GAMECHOICE_BTN_EEPROMCLR1 P1_3
 #define GAMECHOICE_BTN_EEPROMCLR2 P2_3
 
+#define EEPROM_USED_SIZE 4 # 4 bytes for taupitaupe world record
+
 void setup() {
   // Serial init
   // DISABLED SERIAL: interfers with pins RX/DX which are used for buttons
@@ -44,7 +46,7 @@ void loop() {
     lightoff_led(GAMECHOICE_BTN_EEPROMCLR2);
 
     // clear EEPROM
-    for (i = 0 ; i < EEPROM.length() ; i++) {
+    for (i = 0 ; i < EEPROM_USED_SIZE ; i++) {
       EEPROM.write(i, 0);
     }
 
