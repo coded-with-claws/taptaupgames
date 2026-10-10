@@ -12,8 +12,15 @@
 #define START_BLINK_DURATION 500
 #define START_PRESS_DURATION 1000
 
+#define CLASSICSOLO_GAME_DURATION 30000 // milliseconds
+#define CLASSICSOLO_MIN_TAUPE_APPEAR_DELAY 300 // milliseconds
+#define CLASSICSOLO_MAX_TAUPE_APPEAR_DELAY 1500 // milliseconds
+#define CLASSICSOLO_MIN_TAUPE_DISAPPEAR_DELAY 400 // milliseconds
+#define CLASSICSOLO_MAX_TAUPE_DISAPPEAR_DELAY 650 // milliseconds
+
 #define SOLO_START_BTN P1_6
 #define VS_START_BTN P2_6
+#define CLASSICSOLO_START_BTN P1_5
 
 #define TAUPITAUPE_WR_EEADDR 0 // EEPROM address for world record highscore (unsigned long)
 
@@ -27,7 +34,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //bool led_state[LED_NB] = { false };
 
 bool game_started;
-bool solo_mode;
+bool solo_mode, classicsolo_mode;
 unsigned long start_time, end_timeP1, end_timeP2, game_timeP1, game_timeP1_vs, game_timeP2_vs, tmp_time;
 unsigned long scoreP1, scoreP1_vs, scoreP2_vs;
 unsigned long btnP1_nbr, btnP2_nbr;
@@ -69,6 +76,8 @@ void loop_taupitaupe() {
   randomSeed(millis());
   if (solo_mode) {
     taupitaupe_solo();
+  } else if (classicsolo_mode) {
+    taupitaupe_classicsolo();
   } else {
     taupitaupe_vs();
   }
@@ -87,9 +96,11 @@ void choose_taupitaupe_solo_vs() {
 
   game_started = false;
   solo_mode = false;
+  classicsolo_mode = false;
 
   while (!game_started) {
 
+    lightoff_led(CLASSICSOLO_START_BTN);
     lighton_led(SOLO_START_BTN);
     lighton_led(VS_START_BTN);
     tmp_time = millis();
@@ -98,6 +109,7 @@ void choose_taupitaupe_solo_vs() {
     }
     lightoff_led(SOLO_START_BTN);
     lightoff_led(VS_START_BTN);
+    lighton_led(CLASSICSOLO_START_BTN);
     tmp_time = millis();
     while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
       delay(5); // wait for next ISR call
@@ -117,8 +129,24 @@ void choose_taupitaupe_solo_vs() {
       vs_btn_already_pressed = false;
     }
 
+    if (btn_states[CLASSICSOLO_START_BTN]) {
+        game_started = true;
+        classicsolo_mode = true;
+        lightoff_led(SOLO_START_BTN);
+        lightoff_led(VS_START_BTN);
+        for (i = 0; i < 10; i++) {
+          lightoff_led(CLASSICSOLO_START_BTN); delay(50);
+          lighton_led(CLASSICSOLO_START_BTN); delay(50);
+        }
+        lightoff_led(CLASSICSOLO_START_BTN);
+        return;
+    }
+
     if (btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
 
+      lightoff_led(CLASSICSOLO_START_BTN);
+      lightoff_led(VS_START_BTN);
+      delay(10);
       if (solo_btn_already_pressed && !vs_btn_already_pressed && millis() - last_press_solo_btn >= START_PRESS_DURATION) {
         // only solo button was pressed enough time => solo mode starts
         game_started = true;
@@ -136,8 +164,10 @@ void choose_taupitaupe_solo_vs() {
         // both buttons were pressed enough time => vs mode starts
         game_started = true;
         for (i = 0; i < 10; i++) {
-          lightoff_led(SOLO_START_BTN); lighton_led(VS_START_BTN); delay(50);
-          lightoff_led(VS_START_BTN); lighton_led(SOLO_START_BTN); delay(50);
+          lightoff_led(SOLO_START_BTN); lighton_led(VS_START_BTN);
+          delay(50);
+          lightoff_led(VS_START_BTN); lighton_led(SOLO_START_BTN);
+          delay(50);
         }
         lightoff_led(SOLO_START_BTN);
         return;
@@ -344,6 +374,84 @@ void taupitaupe_vs() {
 
       // display win
       disp_win_anim_vs(P1wins, P2wins);
+    }
+
+  }
+
+}
+
+// CLASSIC SOLO mode
+void taupitaupe_classicsolo() {
+
+  unsigned short btnP1_nbr_tmp;
+  unsigned long appear_delay, last_appear;
+  
+  scoreP1 = 0;
+  btnP1_last = 999;
+  btnP1_pressed = false;
+  wrong_btnP1_pressed = false;
+  last_pressed_timeP1 = 0;
+
+  delay(1000);
+  start_time = millis();
+
+  while (game_started) {
+
+    // choose new button
+    btnP1_last = btnP1_nbr;
+    do {
+      btnP1_nbr_tmp = random(0, BUTTON_NB);
+    } while (btnP1_nbr_tmp == btnP1_nbr);
+    btnP1_nbr = btnP1_nbr_tmp;
+    appear_delay = random(CLASSICSOLO_MIN_TAUPE_DISAPPEAR_DELAY, CLASSICSOLO_MAX_TAUPE_DISAPPEAR_DELAY);
+
+    // wait random delay before making taupe appear
+    delay(random(CLASSICSOLO_MIN_TAUPE_APPEAR_DELAY, CLASSICSOLO_MAX_TAUPE_APPEAR_DELAY));
+    last_appear = millis();
+
+    // light on the button and wait for the press or the taupe disappearance
+    lighton_led(btnP1_nbr);
+    while (!btnP1_pressed && millis() - last_appear < appear_delay) {
+      if (btn_states[btnP1_nbr]) {
+        for (i = 0; i < BUTTON_NB; i++) {
+          if (i != btnP1_nbr && btn_states[i]) {
+            if (i == btnP1_last && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
+              wrong_btnP1_pressed = true;
+            } else {
+              wrong_btnP1_pressed = true;
+            }
+          }
+        }
+        btnP1_pressed = true;
+        last_pressed_timeP1 = millis();
+        for (i = 0; i < 3; i++) {
+          lightoff_led(btnP1_nbr);
+          delay(30);
+          lighton_led(btnP1_nbr);
+          delay(30);
+        }
+      }
+      delay(1); // for ISR to keep working
+    }
+
+    if (btnP1_pressed) {
+      if (!wrong_btnP1_pressed) {
+        scoreP1++;
+      }
+    }
+    lightoff_led(btnP1_nbr);
+    btnP1_pressed = false;
+    wrong_btnP1_pressed = false;
+
+    // End of game
+    if (millis() - start_time >= CLASSICSOLO_GAME_DURATION) {
+      game_started = false;
+      scoreP1_vs = scoreP1;
+      scoreP2_vs = 0;
+      game_timeP1 = CLASSICSOLO_GAME_DURATION;
+      game_timeP1_vs = CLASSICSOLO_GAME_DURATION;
+      display_scores();
+      disp_win_anim_solo_normal();
     }
 
   }
