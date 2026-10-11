@@ -21,16 +21,26 @@ For the symmetrical buttons:
 Press only P1's button during 2 seconds for a solo game.
 Press both P1's and P2's buttons during 2 seconds for a versus game.
 For the last button: press it during 2 secondsA for a classic solo game.
-- In solo mode, you play whack-a-mole with all the buttons. You have to hit a score of 30 in the shortest time possible. If you hit a wrong button, you won't get the point when you hit the next good button.
-- In versus mode, each player plays whack-a-mole on their side. The first player to hit a score of 30 wins. If you hit a wrong button at the same time as you hit the good button (with some restrictions due to the hardware design), you don't get the point.
-- In classic solo mode, the moles appear and disappear with random delays. If you hit a wrong button at the same time as you hit the good button, you don't get the point.
 After a game, the choice is up again between solo, versus and classic solo.
 
-#### Solo mode highscore
+#### Solo mode
+In solo mode, you play whack-a-mole with all the buttons.
+You have to hit 30 moles in the shortest time possible.
+If you hit a wrong button, you won't get the point when you hit the next good button.
 There are two highscores:
 - the highscore "of the day" (= since last power up),
 - the highscore of ever: "world record".
 When the game is powered up, the highest score of the day is cleared (zero), but the world record is already memorized (EEPROM).
 When a player beats the score of the day, there is a special win animation.
 When a player beats the world record, there is an even more special win animation.
+
+#### Versus mode
+In versus mode, each player plays whack-a-mole on their side.
+The first player to hit a score of 30 wins.
+If you hit a wrong button at the same time as you hit the good button (with some restrictions due to the hardware design), you don't get the point.
+
+#### Classic solo mode
+In classic solo mode, you play with all the buttons.
+The game lasts 30 seconds and the moles appear and disappear with random delays.
+You have to hit as many moles as you can. If you hit a wrong button at the same time as you hit the good button, you don't get the point.
 
