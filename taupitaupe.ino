@@ -249,7 +249,6 @@ void taupitaupe_solo() {
           }
         }
       }
-      delay(1); // for ISR to keep working
     }
 
     if (btnP1_pressed) {
@@ -347,8 +346,6 @@ void taupitaupe_vs() {
         btnP2_pressed = true;
         last_pressed_timeP2 = millis();
       }
-
-      //delay(1); // for ISR to keep working - not needed because of the delays between light on/off
     }
 
     if (btnP1_pressed) {
@@ -464,7 +461,6 @@ void taupitaupe_classicsolo() {
           delay(30);
         }
       }
-      delay(1); // for ISR to keep working
     }
 
     if (btnP1_pressed) {
