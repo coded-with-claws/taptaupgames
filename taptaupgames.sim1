@@ -75,7 +75,7 @@
 <item itemtype="Diode" CircId="Diode-105" mainComp="false" Show_id="false" Show_Val="false" Pos="-516,-176" rotation="0" hflip="1" vflip="1" label="Diode-105" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Model="Diode Default" Threshold="0.634767 V" MaxCurrent="1 A" Resistance="0.05 Ω" BrkDownV="0 V" SatCurrent="171.435 nA" EmCoef="2" />
 
 <item itemtype="Subcircuit" CircId="Nano-136" mainComp="false" Show_id="false" Show_Val="false" Pos="-204,-820" rotation="-180" hflip="1" vflip="1" label="Nano-136" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0">
-<mainCompProps MainCompId="m328 TQFP-269" Frequency="16 MHz" Program="taptaupgames/taptaupgames.ino.eightanaloginputs.hex" Auto_Load="true" saveEepr="true" MainMcu="true" eeprom="169,29,0,0,0,0," SerialMon="-1" />
+<mainCompProps MainCompId="m328 TQFP-269" Frequency="16 MHz" Program="taptaupgames.ino.eightanaloginputs.hex" Auto_Load="true" saveEepr="true" MainMcu="true" eeprom="169,29,0,0,0,0,0,0," SerialMon="-1" />
 </item>
 
 <item itemtype="Led" CircId="Led-137" mainComp="false" Show_id="true" Show_Val="false" Pos="56,48" rotation="-270" hflip="1" vflip="1" label="Led-12" idLabPos="7.52156,11.041" labelrot="-90" valLabPos="-16,20" valLabRot="0" Color="Red" Grounded="true" Threshold="1.8 V" MaxCurrent="20 mA" Resistance="150 Ω" />

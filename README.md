@@ -19,6 +19,8 @@ Button-based system for games like versus-whack-a-mole.
 
 ## Simulation
 Open `taptaupgames.sim1` with SimulIDE.
+In Arduino IDE, click on `Sketch => Export compiled binary`.
+In SimulIDE, right click on the Arduino and select `Load firmware` then select `taptaupgames.ino.eightanaloginputs.hex` (if it's not already loaded).
 
 ## Authors
 - coded-with-claws
