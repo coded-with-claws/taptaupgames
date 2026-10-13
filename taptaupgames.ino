@@ -2,7 +2,7 @@
    taptaupgames entry point
    Push buttons at startup to run game / diag.
 */
-const byte brocheBuzzer = 11;
+const byte HP1 = 11; const byte HP2 = 10; //Audio
 #include "src/driver/driver.h"
 
 #define GAMECHOICE_BTN_DIAG_LEDS P1_1
@@ -17,8 +17,19 @@ void setup() {
   //Serial.print(F("*** TAPTAUPEGAMES STARTING ***"));
   init_hardware();
   //Serial.println(F("*** TAPTAUPEGAMES INITIALIZED ***"));
-  pinMode(brocheBuzzer, OUTPUT); //Audio
-  tone(brocheBuzzer, 523, 50);
+  pinMode(HP1, OUTPUT); pinMode(HP2, OUTPUT); //Audio
+  // 1. On liste toutes les fréquences de la gamme dans un tableau
+  int notes[] = {523, 587, 659, 698, 784, 880, 988, 1047};
+  // 2. On calcule automatiquement le nombre de notes dans le tableau
+  int nombreDeNotes = sizeof(notes) / sizeof(notes[0]);
+  for (int i = 0; i < nombreDeNotes; i++) {
+    // Joue la note en cours sur HP1
+    tone(HP1, notes[i], 50);
+    delay(50);
+    // Joue la même note en cours sur HP2
+    tone(HP2, notes[i], 50);
+    delay(50);
+  }
 }
 
 void loop() {
