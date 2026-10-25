@@ -18,7 +18,7 @@
 #define CLASSICSOLO_MIN_TAUPE_DISAPPEAR_DELAY 400 // milliseconds
 #define CLASSICSOLO_MAX_TAUPE_DISAPPEAR_DELAY 650 // milliseconds
 
-#define SURVIVALSOLO_TAUPE_APPEAR_DELAY 2000 // milliseconds
+#define SURVIVALSOLO_TAUPE_APPEAR_DELAY 3000 // milliseconds
 
 #define SOLO_START_BTN P1_6
 #define VS_START_BTN P2_6
@@ -549,11 +549,14 @@ void taupitaupe_survivalsolo() {
       btnP1_nbr_tmp = random(0, BUTTON_NB);
     } while (btnP1_nbr_tmp == btnP1_nbr);
     btnP1_nbr = btnP1_nbr_tmp;
-    appear_delay = appear_delay - ((float)appear_delay / 10);
-    // game_timeP1 = appear_delay;display_scores(); // DEBUG
 
-    // wait random delay before making taupe appear
-    delay(random(CLASSICSOLO_MIN_TAUPE_APPEAR_DELAY, CLASSICSOLO_MAX_TAUPE_APPEAR_DELAY));
+    if (appear_delay < 800) {
+      appear_delay = appear_delay - ((float)appear_delay / 50);
+    } else {
+      appear_delay = appear_delay - ((float)appear_delay / 20);
+    }
+    game_timeP1 = appear_delay;display_scores(); // DEBUG
+
     last_appear = millis();
 
     // light on the button and wait for the press or the taupe disappearance
@@ -601,7 +604,7 @@ void taupitaupe_survivalsolo() {
       scoreP2_vs = 0;
       end_timeP1 = millis();
       game_timeP1 = end_timeP1 - start_time;
-      game_timeP1_vs = /*CLASSICSOLO_GAME_DURATION*//*MAX_VAL_GAMETIME*/game_timeP1;
+      game_timeP1_vs = game_timeP1;
       display_scores();
       disp_win_anim_solo_normal();
     }
