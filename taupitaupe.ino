@@ -18,9 +18,12 @@
 #define CLASSICSOLO_MIN_TAUPE_DISAPPEAR_DELAY 400 // milliseconds
 #define CLASSICSOLO_MAX_TAUPE_DISAPPEAR_DELAY 650 // milliseconds
 
+#define SURVIVALSOLO_TAUPE_APPEAR_DELAY 2000 // milliseconds
+
 #define SOLO_START_BTN P1_6
 #define VS_START_BTN P2_6
 #define CLASSICSOLO_START_BTN P1_5
+#define SURVIVALSOLO_START_BTN P2_5
 
 #define TAUPITAUPE_WR_EEADDR 0 // EEPROM address for world record highscore (unsigned long)
 
@@ -34,7 +37,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //bool led_state[LED_NB] = { false };
 
 bool game_started;
-bool solo_mode, classicsolo_mode;
+bool solo_mode, classicsolo_mode, survivalsolo_mode;
 unsigned long start_time, end_timeP1, end_timeP2, game_timeP1, game_timeP1_vs, game_timeP2_vs, tmp_time;
 unsigned long scoreP1, scoreP1_vs, scoreP2_vs;
 unsigned long btnP1_nbr, btnP2_nbr;
@@ -70,7 +73,7 @@ void loop_taupitaupe() {
 
   lightoff_all_leds();
 
-  choose_taupitaupe_solo_vs();
+  choose_taupitaupe_mode();
 
   // Game start
   randomSeed(millis());
@@ -78,6 +81,8 @@ void loop_taupitaupe() {
     taupitaupe_solo();
   } else if (classicsolo_mode) {
     taupitaupe_classicsolo();
+  } else if (survivalsolo_mode) {
+    taupitaupe_survivalsolo();
   } else {
     taupitaupe_vs();
   }
@@ -85,29 +90,34 @@ void loop_taupitaupe() {
   display_scores();
 }
 
-// Blink SOLO_START_BTN & VS_START_BTN, waiting for choice "Versus or Solo"
-// Then sets solo_mode boolean accordingly
-void choose_taupitaupe_solo_vs() {
+// Blink SOLO_START_BTN & VS_START_BTN & CLASSICSOLO_START_BTN,
+// waiting for choice among "Versus", "Solo" or "Classic solo"
+// Then sets solo_mode & classicsolo_mode booleans accordingly
+void choose_taupitaupe_mode() {
   uint8_t i;
   bool solo_btn_already_pressed = false;
   bool vs_btn_already_pressed = false;
   bool classicsolo_btn_already_pressed = false;
+  bool survivalsolo_btn_already_pressed = false;
   unsigned long last_press_solo_btn = millis();
   unsigned long last_press_vs_btn = millis();
   unsigned long last_press_classicsolo_btn = millis();
+  unsigned long last_press_survivalsolo_btn = millis();
 
   game_started = false;
   solo_mode = false;
   classicsolo_mode = false;
 
   while (!game_started) {
-    while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && !btn_states[CLASSICSOLO_START_BTN]) {
+    // Blink LEDs proposing mode choice until a button is pressed
+    while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && !btn_states[CLASSICSOLO_START_BTN] && !btn_states[SURVIVALSOLO_START_BTN]) {
       lightoff_led(CLASSICSOLO_START_BTN);
+      lightoff_led(SURVIVALSOLO_START_BTN);
       lighton_led(SOLO_START_BTN);
       lighton_led(VS_START_BTN);
 
       tmp_time = millis();
-      while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && !btn_states[CLASSICSOLO_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
+      while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && !btn_states[CLASSICSOLO_START_BTN] && !btn_states[SURVIVALSOLO_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
         delay(5); // wait for next ISR call
       }
 
@@ -118,18 +128,21 @@ void choose_taupitaupe_solo_vs() {
       lightoff_led(SOLO_START_BTN);
       lightoff_led(VS_START_BTN);
       lighton_led(CLASSICSOLO_START_BTN);
+      lighton_led(SURVIVALSOLO_START_BTN);
 
       tmp_time = millis();
-      while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && !btn_states[CLASSICSOLO_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
+      while (!btn_states[SOLO_START_BTN] && !btn_states[VS_START_BTN] && !btn_states[CLASSICSOLO_START_BTN] && !btn_states[SURVIVALSOLO_START_BTN] && millis() - tmp_time < START_BLINK_DURATION) {
         delay(5); // wait for next ISR call
       }
       
       delay(5); // wait for next ISR call
     }
 
+    // Light the LED of the button pressed
     lightoff_led(SOLO_START_BTN);
     lightoff_led(VS_START_BTN);
     lightoff_led(CLASSICSOLO_START_BTN);
+    lightoff_led(SURVIVALSOLO_START_BTN);
     
     if (btn_states[SOLO_START_BTN]) {
       lighton_led(SOLO_START_BTN);
@@ -140,8 +153,11 @@ void choose_taupitaupe_solo_vs() {
     if (btn_states[CLASSICSOLO_START_BTN]) {
       lighton_led(CLASSICSOLO_START_BTN);
     }
+    if (btn_states[SURVIVALSOLO_START_BTN]) {
+      lighton_led(SURVIVALSOLO_START_BTN);
+    }
     
-
+    // Determine which mode must be launched
     if (btn_states[SOLO_START_BTN] && !solo_btn_already_pressed) {
       solo_btn_already_pressed = true;
       last_press_solo_btn = millis();
@@ -162,7 +178,15 @@ void choose_taupitaupe_solo_vs() {
     } else if (!btn_states[CLASSICSOLO_START_BTN]) {
       classicsolo_btn_already_pressed = false;
     }
+    
+    if (btn_states[SURVIVALSOLO_START_BTN] && !survivalsolo_btn_already_pressed) {
+      survivalsolo_btn_already_pressed = true;
+      last_press_survivalsolo_btn = millis();
+    } else if (!btn_states[SURVIVALSOLO_START_BTN]) {
+      survivalsolo_btn_already_pressed = false;
+    }
 
+    // Handle choice between SOLO & VERSUS
     if (btn_states[SOLO_START_BTN] || btn_states[VS_START_BTN]) {
       if (solo_btn_already_pressed && !vs_btn_already_pressed && millis() - last_press_solo_btn >= START_PRESS_DURATION) {
         // only solo button was pressed enough time => solo mode starts
@@ -196,6 +220,7 @@ void choose_taupitaupe_solo_vs() {
 
     }
 
+    // Handle choice of CLASSIC SOLO
     if (classicsolo_btn_already_pressed && millis() - last_press_classicsolo_btn >= START_PRESS_DURATION) {
         game_started = true;
         classicsolo_mode = true;
@@ -204,6 +229,18 @@ void choose_taupitaupe_solo_vs() {
           lighton_led(CLASSICSOLO_START_BTN); delay(50);
         }
         lightoff_led(CLASSICSOLO_START_BTN);
+        return;
+    }
+
+    // Handle choice of SURVIVAL SOLO
+    if (survivalsolo_btn_already_pressed && millis() - last_press_survivalsolo_btn >= START_PRESS_DURATION) {
+        game_started = true;
+        survivalsolo_mode = true;
+        for (i = 0; i < 10; i++) {
+          lightoff_led(SURVIVALSOLO_START_BTN); delay(50);
+          lighton_led(SURVIVALSOLO_START_BTN); delay(50);
+        }
+        lightoff_led(SURVIVALSOLO_START_BTN);
         return;
     }
 
@@ -479,6 +516,92 @@ void taupitaupe_classicsolo() {
       scoreP2_vs = 0;
       game_timeP1 = CLASSICSOLO_GAME_DURATION;
       game_timeP1_vs = CLASSICSOLO_GAME_DURATION;
+      display_scores();
+      disp_win_anim_solo_normal();
+    }
+
+  }
+
+}
+
+// SURVIVAL SOLO mode
+void taupitaupe_survivalsolo() {
+
+  unsigned short btnP1_nbr_tmp;
+  unsigned long appear_delay = SURVIVALSOLO_TAUPE_APPEAR_DELAY;
+  unsigned long last_appear;
+  bool endofgame = false;
+  
+  scoreP1 = 0;
+  btnP1_last = 999;
+  btnP1_pressed = false;
+  wrong_btnP1_pressed = false;
+  last_pressed_timeP1 = 0;
+
+  delay(1000);
+  start_time = millis();
+
+  while (game_started) {
+
+    // choose new button
+    btnP1_last = btnP1_nbr;
+    do {
+      btnP1_nbr_tmp = random(0, BUTTON_NB);
+    } while (btnP1_nbr_tmp == btnP1_nbr);
+    btnP1_nbr = btnP1_nbr_tmp;
+    appear_delay = appear_delay - ((float)appear_delay / 10);
+    // game_timeP1 = appear_delay;display_scores(); // DEBUG
+
+    // wait random delay before making taupe appear
+    delay(random(CLASSICSOLO_MIN_TAUPE_APPEAR_DELAY, CLASSICSOLO_MAX_TAUPE_APPEAR_DELAY));
+    last_appear = millis();
+
+    // light on the button and wait for the press or the taupe disappearance
+    lighton_led(btnP1_nbr);
+    while (!btnP1_pressed && millis() - last_appear < appear_delay) {
+      if (btn_states[btnP1_nbr]) {
+        for (i = 0; i < BUTTON_NB; i++) {
+          if (i != btnP1_nbr && btn_states[i]) {
+            if (i == btnP1_last && millis() - last_pressed_timeP1 >= UNPRESS_DELAY) {
+              wrong_btnP1_pressed = true;
+            } else {
+              wrong_btnP1_pressed = true;
+            }
+          }
+        }
+        btnP1_pressed = true;
+        last_pressed_timeP1 = millis();
+        for (i = 0; i < 3; i++) {
+          lightoff_led(btnP1_nbr);
+          delay(30);
+          lighton_led(btnP1_nbr);
+          delay(30);
+        }
+      }
+    }
+
+    if (btnP1_pressed) {
+      if (!wrong_btnP1_pressed) {
+        scoreP1++;
+      }
+    }
+
+    if (!btnP1_pressed || wrong_btnP1_pressed) {
+      endofgame = true;
+    }
+
+    lightoff_led(btnP1_nbr);
+    btnP1_pressed = false;
+    wrong_btnP1_pressed = false;
+
+    // End of game
+    if (endofgame) {
+      game_started = false;
+      scoreP1_vs = scoreP1;
+      scoreP2_vs = 0;
+      end_timeP1 = millis();
+      game_timeP1 = end_timeP1 - start_time;
+      game_timeP1_vs = /*CLASSICSOLO_GAME_DURATION*//*MAX_VAL_GAMETIME*/game_timeP1;
       display_scores();
       disp_win_anim_solo_normal();
     }
